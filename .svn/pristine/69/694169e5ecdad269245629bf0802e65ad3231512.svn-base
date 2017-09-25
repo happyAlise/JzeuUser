@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+      .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem;padding-top:25px}
+      .aui-list-view-cell:active{background:#c3eaf0}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin()">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">钱包设置</div>
+	</header>
+	<ul class="aui-list-view">
+		<li class="aui-list-view-cell" onclick="openbindWin()">
+			<div class="aui-arrow-right">账号绑定</div>
+		</li>
+		<li class="aui-list-view-cell" onclick="openmimaWin()">
+			<div class="aui-arrow-right">修改支付密码</div>
+		</li>
+	     <li class="aui-list-view-cell" onclick="fnopenforget()">
+			<div class="aui-arrow-right">忘记支付密码</div>
+		</li>
+
+	</ul>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+ var username=$api.getStorage('username');
+ var user=$api.getStorage(username);
+	apiready = function(){		
+	}
+	
+	function openbindWin(){
+	   api.openWin({
+	       name: 'bs_bind',
+	       url: './bs_bind.html'
+       })	  
+	}
+	function openmimaWin(){
+       if(!user){		  
+		  return;
+		}
+	   api.openWin({
+	       name: 'bs_setmima',
+	       url: './bs_setmima.html'
+       })	  
+	}
+		/*打开修改密码页面*/
+  function fnopenforget(){
+       if(!user){		  
+		  return;
+		}
+	  api.openWin({
+	      name: 'forgetmima',
+	      url: './forgetmima.html'
+      });	
+	}	
+	
+	
+</script>
+</html>

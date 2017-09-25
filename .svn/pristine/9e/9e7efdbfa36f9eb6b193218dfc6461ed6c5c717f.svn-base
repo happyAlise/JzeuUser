@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	nav{
+    	width:100%;
+    	margin-bottom:1.9rem;
+    	padding-top:2rem;
+    	}
+    	.nav-img{
+    	margin:0 auto;
+        text-align:center;
+    	width:5rem;
+    	height:5rem;
+    	border-radius:50%;
+    	overflow:hidden;
+    	margin-bottom:7px;
+    	}
+    	.nav-img img{ 
+    	 max-height:5rem;
+    	}
+
+    	.aui-btn{
+    	background:#99cc33;
+    	border-radius:0.5rem;
+    	border:none;
+    	width:96%;
+    	margin:0 auto;
+    	}
+    .aui-card:after{
+      border-radius:2px !important;
+       }
+     .aui-input-row{
+     padding-left:10px;
+     }
+    	.password{
+    	height:100%;
+    	line-height:100%;
+    	font-size:0.8rem;
+    	display:inline-block;
+    	margin-top:0.75rem;
+    	color:#FF6600;
+    	padding-right:1rem;
+    	}
+    	input{
+    	display: inline;
+    	width:70% !important;
+    	}
+    	input[type="text"], input[type="password"]{
+    	line-height:0 !important;
+    	}
+    	.aui-btn-block {
+		    display: block;
+		    width: 95%;
+		    padding: 8px 0;
+		    margin:1rem auto 1.5rem;
+		    font-size: 16px;
+		    border-radius:3px;
+		      background-color:rgba(0,0,0,0.25);
+		   }
+    	.mothods{
+    	display:flex;
+    	justify-content:space-between;
+    	margin:1.5rem 0.75rem;
+    	}
+    	.method{
+    	width:30%;
+    	height:2rem;
+    	line-height:2rem;
+    	background:#FF6600;
+    	text-align:center;
+    	color:#fff;
+    	font-size:0.8rem;
+    	}
+    .loading{width:100%;text-align:center;display:none;position:absolute;top:65%;font-size:0.9rem}
+     .loading-img{width:2.5rem}
+    </style>
+</head>
+<body>
+	 <div class="aui-content">
+		  <nav>
+		    <div class="nav-img">
+		       <img src="../image/awatar.png" class='awatar'/>    
+		    </div>
+		  </nav> 	 
+		<div class="aui-card" id='loginMethod1'>
+			<div class="aui-form">
+				<div class="aui-input-row">
+					<span class="aui-input-addon key">账号</span>
+					<input type="text" class="aui-input"  id='tel' >
+				<!--	onblur='setImg()'-->
+				</div>
+				<div class="aui-input-row">
+				<span class="aui-input-addon name" >密码</span>
+					<input type="password" class="aui-input" id='pwd' onkeyup="bgcolor()">
+				</div>
+			</div>	
+		</div>
+		<div class="aui-btn aui-btn-block aui-btn-success" onclick="login()">确认</div>
+		<div class="mothods">
+		  <div class="method" id="login_iphone" onclick="fnOpenwin('registerccode','./registerccode.html')">注册账号</div>
+		  <div class="method" id="login_password" onclick="fnOpenwin('forgetPwd','./forgetPwd.html')">忘记密码？</div>
+		</div>	
+	 </div>
+	  <div class='loading'>
+	     <img src="../image/loading.gif" class='loading-img'/>
+	      <p>登录中</p> 
+	  </div>
+</body>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+  
+     /*打开其他页面*/
+		function fnOpenwin(name,url){
+		api.openWin({
+	        name: name,
+	        url: url
+        });
+	}
+	/*设置用户头像*/
+	function setImg(){
+	  var tel = $("#tel").val();
+          var imgsrc=$api.getStorage('imgsrc');
+          console.log(imgsrc)
+	  api.ajax({
+	      url:'http://106.14.69.92/Appmanager/login/Head?username='+tel,
+	      method:'get'
+      },function(ret,err){       
+          console.log(JSON.stringify(ret));
+      	 if(ret.result=="success"){
+	      	    if(ret.info==null){
+	      	       return false;
+	      	    }else{
+	      	    $('.awatar').attr('src','http://106.14.69.92/Appmanager/'+ret.info);    
+	      	    }	  
+      	 }else{
+      	  if(tel!==''){
+      	  api.toast({
+	            msg:"您未注册"
+	        }); 
+           }
+      	 }
+      });
+	}
+
+	
+	/*判断登录*/
+		function login(){	 
+		var tel = $("#tel").val();
+		var pwd = $("#pwd").val();	
+		if ($.trim(tel)=="")
+		{
+		     api.toast({
+	            msg:"账号不能为空"
+	        });           
+                 return;
+		}　
+	    else if ($.trim(pwd)=="")
+		{
+		      api.toast({
+	            msg:"密码不能为空"
+	        });
+                 return;
+		}	
+		else{
+		$('.loading').show();
+		setImg();
+		setTimeout('loginIn()',1000)	
+ 
+	}
+}		
+   function bgcolor(){
+   var tel = $("#tel").val();
+   var pwd = $("#pwd").val();	
+	   if(!tel){
+	    return;
+	   }else if(!pwd){
+       $('.aui-btn-success').css('backgroundColor','rgba(0,0,0,0.25)')
+	   }else{
+	   	 $('.aui-btn-success').css('backgroundColor','#9c3')
+	   }
+   }
+
+   function loginIn(){
+   		var tel = $("#tel").val();
+		var pwd = $("#pwd").val();	
+       api.ajax({
+	    url: 'http://106.14.69.92:80/Appmanager/login/do?username='+tel+'&password='+pwd,
+	    method: 'get'
+	}, function(ret, err) {	
+	    	if(ret.result=="success"){
+		    	$('.loading').hide();
+		        $api.setStorage('username',tel);
+//	    	api.toast({
+//	            msg:"登录成功"
+//	        });  
+	            api.openWin({
+		            name:'index',
+		            url: '../index.html',
+		            reload:true
+	            });  
+	            return;    
+			}
+			else{
+			$('.loading').hide();
+		    	api.toast({
+		            msg:"密码错误"
+		        });  
+	     }      
+	});
+}
+</script>
+
+
+
+
+
+
+
+</html>

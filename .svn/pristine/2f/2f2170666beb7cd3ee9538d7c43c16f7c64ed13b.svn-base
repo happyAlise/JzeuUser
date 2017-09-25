@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+
+       .safety{display:inline-block;font-size:0.8rem;margin:0.5rem auto 0.5rem 1rem;}
+       input{display:block;width:90%;margin:0 auto;border:1px solid rgba(0,0,0,0.2);border-radius:5px;height:2rem;line-height:2rem;
+       outline:none;margin-bottom:0.6rem;padding-left:0.5rem;font-size:0.9rem}
+       .wrapper{padding-top:3rem}
+       .aui-btn-block{background:#ff6600;height:2.5rem;padding:0;line-height:2.5rem;width:90%;
+       margin:0 auto;color:#fff;font-size:0.9rem;text-align:center;border-radius:8px}
+    </style>
+</head>
+<body>
+   <div class="wrapper">
+	     <input type="text"  class='inputext alipay' placeholder="请输入支付宝账号"/>
+	     <input type="text"  class='inputext tel' placeholder="请输入手机号"/>
+	     <input type="text"  class='inputext name' placeholder="请输入姓名"/>
+	     <span class='safety'>* 注：请确保支付宝账号与姓名是真实的</span>
+   </div>
+   <div class="aui-btn aui-btn-block" onclick="fnsure()">确认</div>	
+   
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fnsure(){
+	 var username=$api.getStorage('username');
+	 var alipay=$('.alipay').val();
+	 var tel=$('.tel').val();
+	 var name=$('.name').val();
+     var email = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(!(email.test(alipay)||/^1[34578]\d{9}$/.test(alipay))){
+           api.toast({
+	          msg:'支付宝账号有误，请重新填写'
+	      });
+          return;
+         }
+	  if(!(/^1[34578]\d{9}$/.test(tel))){
+	      api.toast({
+	          msg:'手机号码有误，请重新填写'
+	      });
+	    return;
+	  }
+	  if(!name){
+	    api.toast({
+	        msg:'姓名不能为空'
+        });
+        return;
+	  }
+	 api.ajax({
+	     url:'http://106.14.69.92/Appmanager/qiuzhi/payaccount?username='+username+'&name='+name+'&account='+alipay+'&phone='+tel
+     },function(ret,err){
+       if(ret){
+       $api.setStorage('bindpay',ret.result);
+	        api.toast({
+		        msg:'提交成功'
+	        });
+	       setTimeout(api.closeToWin({
+	                   name: 'bs_mywallet'
+                     }),2000)	        
+        }else{
+           api.toast({
+		        msg:'提交失败'
+	        });
+        }
+     });
+	}
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

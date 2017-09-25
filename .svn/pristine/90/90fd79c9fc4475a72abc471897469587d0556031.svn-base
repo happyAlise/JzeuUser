@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+		/*列表1*/
+			 .list {
+				margin: 0.3rem 0.1rem 0.5rem 0.1rem;
+				border: 1px solid #f2f2f2;
+				overflow: auto;
+				background:#fff;		
+			}
+			.top {
+				display: flex;
+				padding: 1rem 0.7rem;
+			}
+			.top img {
+                height:3rem;
+                width:3rem;
+				flex: 0 0 3rem;
+			}
+			.top .title {
+				display: inline-block;
+				vertical-align: top;
+				padding-left: 1rem;
+				padding-top: 0.3rem;
+				flex: 1;
+				font-size:0.9rem;
+			}
+			.time{
+			font-size:0.8rem;
+			margin-top:0.2rem;
+			}
+			.top .state {
+				font-size:0.9rem;
+				color: #FF6600;
+				margin-top: 1rem;
+				margin-right:0.7rem;				
+			}
+
+			.outlined{background:none;color:#FFC02B;font-size:0.9rem}
+			.tip{width:100%;text-align:center;margin-top:60%;}
+			.tip p{margin-bottom:1rem;}
+    </style>
+</head>
+<body>
+	<div id="list1"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		requestZhaoping();
+	};
+		    var username = $api.getStorage('username');
+	  function fnopenjobwin(id){
+			api.openWin({
+				name : 'jobdetail',
+				url : './jobdetail.html',
+				pageParam:{'wid':id}
+			})
+	  }
+	  
+  function requestZhaoping(){
+           $.ajax({
+             type:'GET',
+           url:'http://106.14.69.92/Appmanager/Jzmanagement/zhengzaizhaop?username='+username,
+             success:function(data){
+              if(data.length==0){
+ 			   var text="<div  class='tip'><p>您当前没有正在招的兼职</p>"+"<div><div class='aui-btn aui-btn-warning  aui-btn-block outlined' onclick='fnopenjobtypewin()'>发布工作</div></div></div>"
+                  $('#list2').html(text)
+              }else{               
+                   var list="";
+				   for(var i=0;i<data.length;i++){
+				     list=list+"<div class='list' onclick='fnopenjobwin("+data[i].id+")'><div class='top'><img src='"+data[i].url+"' class='list1img'/>"
+				      +"<div class='title'><div>"+data[i].title+"</div><p class='time'>"+data[i].datebegin+
+				      "</p></div><div class='state'><span >已审核</span></div></div></div>"	      
+				      }
+				      $('#list1').html(list)
+				  }
+				},
+				error:function(data){
+				  alert(data)
+				}           
+           })      
+      }
+</script>
+</html>

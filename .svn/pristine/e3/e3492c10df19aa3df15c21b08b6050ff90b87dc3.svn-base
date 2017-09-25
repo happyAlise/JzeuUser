@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>首页</title>
+		<link rel="stylesheet" type="text/css" href="./css/api.css" />
+		<link rel="stylesheet" type="text/css" href="./css/aui.css" />
+		<style>
+			#header{
+				text-align:center;
+				height:2.5rem;
+				line-height:2.5rem;
+				background:#fff;
+				font-size:1.2rem;
+				border-bottom:2px solid #ededed;
+				}
+				.highlight{
+				color:#00b7ee;
+				}
+			#footer {
+				display:flex;
+				display: -webkit-box;
+				display: -moz-box;
+				text-align: center;
+				position: absolute;
+				bottom: 0px;
+				width: 100%;
+				border-top:1px solid  #C8C7CC;
+				height:3.3rem;
+				background:none !important;
+			   
+			}
+			footer div {
+				flex: 1;
+				-moz-box-flex: 1;
+				-webkit-box-flex: 1;
+				font-size:0.8rem;
+				text-align:center;
+			}
+			.icon{
+			width:1.2rem;
+			display:inline-block;
+			margin-top:0.3rem;
+		
+			}
+			span{
+			display:block;
+			font-size:0.8rem;
+			}
+		</style>
+	</head>
+	<body>
+	  <div id="wrapper">
+			<!-- 头部 -->
+			<div id="header">
+				首页
+			</div>
+			<!-- 主窗体 -->
+			<div id="main"></div>
+			<!-- 底部按钮 -->
+			<footer id="footer">
+				<div onclick="choose('home')" class='highlight'><img id="home" class="icon" src="./image/h_green.png"><span class="icon_title " >首页</span></div>
+				<div onclick="choose('manage')"><img id="manage" class="icon" src="./image/m_gray.png"><span class="icon_title">兼职管理</span></div>
+				<div onclick="choose('community')"><img id="community" class="icon" src="./image/c_gray.png"><span class="icon_title">社区</span></div>
+				<div onclick="choose('center')"  ><img id="center" class="icon" src="./image/q_gray.png"><span class="icon_title">企业中心</span></div>
+			</footer>
+	</div>
+	</body>
+	<script type="text/javascript" src="./script/api.js"></script>
+	<script type="text/javascript" src="./script/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {		
+			var header = $api.byId('wrapper');
+			//适配iOS7+，Android4.4+状态栏沉浸式效果，详见config文档statusBarAppearance字段
+			$api.fixStatusBar(header);
+
+          openUrl('home','./html/home.html');  /*首先加载登录页*/
+			//监听返回键，直接退出程序
+			api.addEventListener({
+				name : 'keyback'
+			}, function(ret, err) {
+			   console.log(ret)		   
+				if (ret){
+					api.closeWidget({});
+				}
+			});
+
+	}
+		  
+		/*打开新界面窗口！frame类型*/
+		function openUrl(name, url) {
+			var header = $api.byId('wrapper');
+			//适配iOS7+，Android4.4+状态栏沉浸式效果，详见config文档statusBarAppearance字段
+			$api.fixStatusBar(header);
+			//动态计算header的高度，因iOS7+和Android4.4+上支持沉浸式效果，
+			var headerH = $api.offset(header).h;
+			//footer高度为css样式中声明的30px
+			var footer = $api.byId('footer');
+			var footerH = $api.offset(footer).h;
+			var frameH = api.winHeight - headerH - footerH;
+			api.openFrame({
+				name : name,
+				url : url,
+				bounces : false,
+				reload : false,
+				hidden : false,
+				rect : {
+					x : 0,
+					y : headerH,
+					w : 'auto',
+					h : frameH
+				},
+				showProgress : true,
+				bounces:true
+			});
+		}
+		/*选择*/
+		function choose(ob) {
+			var title = ob;
+			console.log(title);
+			if (title == "home") {
+				openUrl('home', 'html/home.html');
+				$("#header").text("兼职e族企业版");
+				api.setFrameAttr({
+					name : 'manage',
+					hidden : true
+				});
+				api.setFrameAttr({
+					name : 'community',
+					hidden : true
+				});
+				api.setFrameAttr({
+					name : 'center',
+					hidden : true
+				});
+				$("footer div").eq(0).addClass('highlight').siblings().removeClass('highlight');
+				$("#home").attr('src', './image/h_green.png');
+				$("#manage").attr('src', './image/m_gray.png');
+				$("#community").attr('src', './image/c_gray.png');
+				$("#center").attr('src', './image/q_gray.png');
+			}
+			if (title == "manage") {
+				openUrl('manage', 'html/manage.html');
+				 api.showProgress({
+					msg:"加载中。。。"
+		          });
+				$("#header").text("兼职管理");
+				api.setFrameAttr({
+					name : 'home',
+					hidden : true
+				});
+				api.setFrameAttr({
+					name : 'community',
+					hidden : true
+				});
+				api.setFrameAttr({
+					name : 'center',
+					hidden : true
+				});
+				$("footer div").eq(1).addClass('highlight').siblings().removeClass('highlight');
+				$("#home").attr('src', './image/h_gray.png');
+				$("#manage").attr('src', './image/m_green.png');
+				$("#community").attr('src', './image/c_gray.png');
+				$("#center").attr('src', './image/q_gray.png');
+				api.hideProgress();
+			}
+			if (title == "community") {
+				openUrl('community', 'html/community.html');
+				$("#header").text("社区中心");
+				api.setFrameAttr({
+					name : 'home',
+					hidden : true
+				});
+				api.setFrameAttr({
+					name : 'manage',
+					hidden : true
+				});
+				api.setFrameAttr({
+					name : 'center',
+					hidden : true
+				});
+			   $("footer div").eq(2).addClass('highlight').siblings().removeClass('highlight');
+                $("#home").attr('src', './image/h_gray.png');
+				$("#manage").attr('src', './image/m_gray.png');
+				$("#community").attr('src', './image/c_green.png');
+				$("#center").attr('src', './image/q_gray.png');
+			}
+			if (title == "center") {
+				openUrl('center', 'html/center.html');
+				$("#header").text("企业中心");
+				api.setFrameAttr({
+					name : 'home',
+					hidden : true
+				});
+				api.setFrameAttr({
+					name : 'manage',
+					hidden : true
+				});
+				api.setFrameAttr({
+					name : 'community',
+					hidden : true
+				});
+				$("footer div").eq(3).addClass('highlight').siblings().removeClass('highlight');
+				$("#home").attr('src', './image/h_gray.png');
+				$("#manage").attr('src', './image/m_gray.png');
+				$("#community").attr('src', './image/c_gray.png');
+				$("#center").attr('src', './image/q_green.png');
+			}
+		}
+	</script>
+</html>

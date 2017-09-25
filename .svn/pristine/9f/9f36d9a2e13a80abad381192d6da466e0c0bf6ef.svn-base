@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+       .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+       .title{display:inline-block}
+       .aui-list-view-cell:after{border:none !important}
+       .hightlight{background:#41c7db}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style='padding-top:20px;'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">薪资发放</div>
+	</header>
+    <div class='aui-content'>  
+       <ul class="aui-list-view">
+       	<li class="aui-list-view-cell" id='joblist' onclick='fnopenSalaryNew()'>
+       		<div class='title'>职位1</div>
+       	</li>
+       	<li class="aui-list-view-cell" id='joblist'  onclick='fnopenSalaryNew()'>
+       		<div class='title'>职位2</div>
+       	</li>
+       </ul>
+    </div>
+   
+</body>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+   function fnopenSalaryNew(){
+     api.openWin({
+	     name: 'salarynews',
+	     url: './salarynews.html'
+     });
+   }
+
+
+  $(function(){
+   $('.aui-list-view-cell').click(function(){
+   $(this).addClass('hightlight').siblings().removeClass('hightlight');
+   })
+})
+     var header=$api.dom('header');
+     var headerH=$api.offset(header).h;
+      $api.fixStatusBar(headerH);
+	apiready = function(){
+		
+	};
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

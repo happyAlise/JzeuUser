@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+      .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem;padding-top:1.25rem}
+      .aui-list-view-cell:active{background:#c3eaf0}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin()">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">钱包设置</div>
+	</header>
+	<ul class="aui-list-view">
+		<li class="aui-list-view-cell" onclick="openbindWin()">
+			<div class="aui-arrow-right">账号绑定</div>
+		</li>
+		<li class="aui-list-view-cell" onclick="openmimaWin('bs_setmima','./bs_setmima.html')">
+			<div class="aui-arrow-right">修改支付密码</div>
+		</li>
+	     <li class="aui-list-view-cell" onclick="openmimaWin('forgetmima','./forgetmima.html')">
+			<div class="aui-arrow-right">忘记支付密码</div>
+		</li>
+
+	</ul>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+ var username=$api.getStorage('username');
+ var user=$api.getStorage(username);
+ var cloudpwd;
+	apiready = function(){	
+		
+	}
+	
+	function openbindWin(){
+	   api.openWin({
+	       name: 'bs_bind',
+	       url: './bs_bind.html'
+       })	  
+	}
+	function openmimaWin(name,url){
+       if(!user){	
+            api.ajax({
+	           url:'http://106.14.69.92/Appmanager/Enplay/PaymentpasswordInfo?username='+username
+           },function(ret,err){
+	           if(ret){
+	           	  cloudpwd=ret.info   
+	           	  console.log(JSON.stringify(ret))
+	           	     if(!cloudpwd){
+	           	        api.confirm({
+						    title: '提示',
+						    msg: '设置支付密码？',
+						    buttons: ['确定', '取消']
+						}, function(ret, err){
+						    var index = ret.buttonIndex;
+						    if(index==1){
+						      	   api.openWin({
+								       name: 'setpaypassword',
+								       url: './setpaypassword.html'
+							       })		
+						       }
+						  })	  
+	        	   }else{
+		        	 api.openWin({
+					       name: name,
+					       url:url
+				      })
+	              }	
+		         }
+	       })
+	}else{
+      api.openWin({
+	       name:name,
+	       url:url
+       })	
+	}
+}	
+
+//
+
+</script>
+</html>

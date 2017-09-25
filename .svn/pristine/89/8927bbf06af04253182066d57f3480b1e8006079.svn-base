@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-list-view-cell {padding:9px 10px;}
+        .aui-list-view:after {border-top:none;}
+        .aui-list-view-cell:last-child:after { border-bottom:1px solid #ededed;}
+    	.aui-iconfont{color:#666 !important;padding:0 !important}
+    	.aui-ellipsis-1{font-size:0.9rem;}
+    	img{width:5rem !important;height:4rem;}
+    	.aui-img-body{margin-top:0.3rem}
+    	.aui-pull-left{margin-right:0.5rem}
+    	.text{color:#666;font-size:0.7rem;}
+        i{margin-right:0 !important;font-size:0.8rem !important;}
+    	ul{margin-bottom:0 !important;border-bottom:none !important;border-top:1px solid #ededed !important;}
+    </style>
+</head>
+<body>
+	<div class="aui-aui-content" id='evaluation'>
+	   <script id="evaluationtmpl" type="text/x-dot-template">
+		  {{ for(var i in it) { }}
+		   <ul class="aui-list-view" onclick="openWin('{{=it[i].url}}')">
+					<li class="aui-list-view-cell aui-img">
+						<img class=" aui-pull-left" src="{{=it[i].thumbnail_pic_s}}">
+						<div class="aui-img-body">
+							<div class='aui-ellipsis-1'>{{=it[i].title}}</div> 
+							<p class="aui-ellipsis-2">
+							   <div class='aui-pull-left'>
+								   <i class="aui-iconfont aui-icon-edit"></i>
+								   <span class='text'>{{=it[i].author_name}}</span>
+							   </div>
+							   <div >
+								   <i class="aui-iconfont aui-icon-time"></i>
+								   <span class='text'>{{=it[i].date}}</span>
+							   </div>
+							</p>
+						</div>
+					</li>
+				</ul>
+		  {{ } }}
+       </script>
+	</div>	 
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+			/*请求 */	
+		 api.setRefreshHeaderInfo({
+			loadingImg : 'widget://image/refresh.png',
+			bgColor : '#ccc',
+			textColor : '#fff',
+			textDown : '下拉刷新...',
+			textUp : '松开刷新...'
+		}, function(ret, err) {
+			//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			if (ret) {
+				window.location.reload();
+				api.refreshHeaderLoadDone();
+			}
+		});
+			Request();
+		};
+	
+	
+	function Request(){
+		api.ajax({
+	        url:'http://v.juhe.cn/toutiao/index?type=guonei&key=ea590b46f14c8162c8234211d4e2b194'
+        },function(ret,err){
+        	if(ret){
+        	var data=ret.result.data;
+        	console.log(JSON.stringify(data))
+        	var evalText = doT.template($("#evaluationtmpl").text());
+			$("#evaluation").html(evalText(data));
+        	}
+        })
+	}
+    function openWin(itUrl){
+     api.openWin({
+	     name: 'bs_newdetail',
+	     url: 'bs_newdetail.html',
+	     pageParam:{'itUrl':itUrl}
+     });
+    }
+</script>
+</html>

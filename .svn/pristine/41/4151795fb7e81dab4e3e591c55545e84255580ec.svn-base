@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="../css/aui.css">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+       .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+       .row{display:flex;height:2.5rem;line-height:2.5rem;font-size:0.9rem}
+     .title{
+    	border:1px solid #ededed;
+    	border-right:none;
+    	padding: 0 10px !important;
+    	color:#666;
+    	display:inline-block;
+    	width:6.5rem;
+    	flex:0 0 6.5rem;
+    	text-align:center;
+    	}
+       .aui-btn-block {
+	    display: block;
+	    width: 95%;
+	    padding: 8px 0;
+	    margin:1rem auto 1.5rem;
+	    font-size: 16px;
+	    border-radius:6px;
+	    background:#f60;
+	    border:none;
+	   }
+	   .aui-btn-block:active{background:rgba(0,0,0,0.2)}
+    	.yue{display:inline-block;padding-top:0.7rem !important;color:#f60}
+    	.shiti{border:1px solid #ededed !important;padding:0;height:2.5rem;
+    	line-height:1rem;flex:1;padding-left:1rem;}
+    	.tips{margin-top:0.5rem;margin-left:1rem;font-size:0.8rem}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">转出支付宝</div>
+	</header>
+	<div class="aui-form">
+		<div class="row">
+			<span class="title">账户余额</span>
+			<span class="shiti yue">0.00</span>
+		</div>
+		<div class="row">
+			<span class="title">转出金额</span>
+			<input class="shiti cash" type='text' placeholder="请输入转出金额">
+		</div>
+		<div class="row">
+			<span class="title">支付宝账号</span>
+			<input class="alipay shiti"  type='text' placeholder="请输入支付宝账号">
+		</div>
+		<div class="row">
+			<span class="title">账户姓名</span>
+			<input class="shiti name"  type='text' placeholder="请输入账户姓名">
+		</div>		
+	</div> 
+	<p class='tips'>*提示:请确认输入账号无误，预计一个工作日内到账</p>
+		<div class="aui-btn aui-btn-block aui-btn-success" onclick='pushcash()'>确认转出</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+     var sumMoney=$api.getStorage('money');
+     $('.yue').text(sumMoney)
+	};
+	
+	function pushcash(){
+	 var sumMoney=$api.getStorage('money');
+	  var cash= $('.cash').val();
+	  if(!(cash.match(/^[1-9][0-9]*$/))){
+	     api.toast({
+	         msg:'转出金额必须是正整数'
+         });
+         return;
+	  }
+	  if(cash>sumMoney){
+	       api.toast({
+	         msg:'账户余额不足'
+         });
+         return;
+	  }
+	var alipay=$('.alipay').val();
+	var email = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(!(email.test(alipay)||/^1[34578]\d{9}$/.test(alipay))){
+           api.toast({
+	          msg:'支付宝账号有误，请重新填写'
+	      });
+          return;
+         }
+         var name=$('.name').val();
+        if(!name){
+         api.toast({
+	          msg:'姓名不得为空'
+	      });
+	       return;
+        }
+       
+	}
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

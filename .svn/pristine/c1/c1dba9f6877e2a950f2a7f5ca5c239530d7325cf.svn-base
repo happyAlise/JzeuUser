@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<style>
+			.list{
+				margin:auto 0.1rem;
+				border: 1px solid #ededed;
+				overflow: auto;
+				background:#fff;
+			}
+			.check{
+                 background:#FFC02B;
+                 color:#fff;
+			}
+			.top{
+				display: flex;
+				padding: 0.7rem 0.7rem;
+			}
+			.top img{
+				height: 3.5rem;
+				width: 3.5rem;
+				flex: 0 0 3.5rem;
+			}
+			.top .title{
+				display: inline-block;
+				vertical-align: top;
+				padding-left: 1rem;
+				padding-top: 0.3rem;
+				flex:1;
+				font-size: 0.9rem;
+			}
+			.time{
+				font-size: 0.8rem;
+				margin-top: 0.3rem;
+			}
+			.top .state{
+				font-size: 1.2rem;
+				color: #FF6600;
+				margin-top: 0.8rem;
+				margin-right: 0.7rem;
+				font-weight:700
+			}
+			.top .state span{
+			display:none
+			}
+			.bottom{
+				width: 100%;
+				font-size: 0.9rem;
+				color: #FF6600;
+				height: 2.1rem;
+				line-height: 2.1rem;
+				border: none;
+				border-top: 1px solid #ededed;
+			}
+			.edit {
+				margin-right: 0.5rem;
+				width: 4rem;
+				text-align: center;
+				border-left: 1px solid #ededed;
+			}
+			i{color:#f60;}
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+     .elipse{padding:7px 0 7px 10px;color:#333;width:100%;font-size:0.8rem;background:#f2f2f2}
+     i{dispaly:none}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style='padding-top:20px'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">切换兼职</div>
+	</header>
+	<p class='elipse'>在招兼职</p>
+	<div id="list1"></div>
+</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../script/doT.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+		   api.showProgress({
+		    title: '努力加载中...',
+		    modal: false
+	    });	
+			request();	
+		}
+
+        function request(){
+        var username = $api.getStorage('username');
+          $.ajax({
+            url:'http://106.14.69.92/Appmanager/Release/current?username='+username,
+            type:'GET',
+            success:function(msg){
+            api.hideProgress();
+                 var list="";
+				 for(var i=0;i<msg.length;i++){
+				     list=list+"<div class='list'><div class='top' onclick='fnopenjobwin("+i+")'><img src='"+msg[i].url+"' class='list1img'/>"
+				      +"<div class='title'><div class='name'>"+msg[i].title+"</div><p class='time'>"+msg[i].datebegin+
+				      "</p></div><div class='state'><span >"+msg[i].id+"</span></div></div></div>"
+				   }
+				    $('#list1').html(list)            
+            }
+          })
+
+        }
+		function fnopenjobwin(i){
+             $('.list').eq(i).addClass('check').siblings().removeClass('check');
+             var title=$('.list').eq(i).find('.name').text();
+              var id=$('.list').eq(i).find('.state span').text();
+			  console.log(title)
+			  console.log(id)
+			 api.execScript({
+				name:'index',
+				frameName:'home',
+	            script: 'update("'+title+'","'+id+'");'
+            })
+			api.closeWin();
+		}
+	</script>
+</html>

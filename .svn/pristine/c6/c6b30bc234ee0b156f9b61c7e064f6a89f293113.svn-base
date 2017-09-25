@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+       .title{display:inline-block}
+       .aui-list-view-cell:after{border:none !important}
+        .aui-list-view:after {border-top:none !important;}
+       .hightlight{background:#41c7db}
+    </style>
+</head>
+<body>
+    <div class='aui-content'>  
+       <ul class="aui-list-view">
+       	<li class="aui-list-view-cell" id='joblist'>
+       		<div class='title'>职位1</div>
+       	</li>
+       	<li class="aui-list-view-cell" id='joblist'>
+       		<div class='title'>职位2</div>
+       	</li>
+       </ul>
+    </div>
+   
+</body>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+  $(function(){
+   $('.aui-list-view-cell').click(function(){
+   $(this).addClass('hightlight').siblings().removeClass('hightlight');
+   })
+})     
+	apiready = function(){
+		
+	};
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

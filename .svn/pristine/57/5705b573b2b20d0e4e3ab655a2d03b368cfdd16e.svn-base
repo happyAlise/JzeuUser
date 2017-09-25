@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	.aui-bar-nav{
+    	background:#fff;
+    	color:#000;
+    	margin-bottom:0.5rem;
+    	}
+    	.aui-btn{
+    	background:#99cc33;
+    	border-radius:0.5rem;
+    	border:none;
+    	width:96%;
+    	margin:0 auto;
+    	}
+    .aui-card:after{
+      border-radius:2px !important;
+       }
+     .aui-input-row{
+     padding-left:10px;
+     padding-right:10px;
+     }
+    	.password{
+    	height:2rem;
+    	line-height:2rem;
+    	font-size:0.75rem;
+    	width:5rem;
+    	text-align:center;
+    	display:inline-block;
+    	margin-top:0.3rem;
+    	color:#fff;
+        background:#ff6600;
+        border-radius: 3px;
+    	}
+    	input{
+    	display: inline;
+    	width:60% !important; 
+    	}
+    	.readed{
+    	margin:0 auto;
+    	width:100%;
+    	text-align:center;
+    	margin:2rem 0;
+    	font-size:0.8rem;
+    	}
+    	.readed a{
+    	color:blue;
+    	text-decoration:underline;
+    	}
+    </style>
+</head>
+<body>
+	
+	<header class="aui-bar aui-bar-nav" style='padding-top:20px;' id='header'>
+		<a class="aui-pull-left">
+			<span class="aui-iconfont aui-icon-left" style="color:#ff6600" onclick="api.closeWin();"></span>
+		</a>
+		<div class="aui-title">注册</div>
+	</header>
+	   <div class="aui-card">
+			<div class="aui-form">
+				<div class="aui-input-row">
+					<span class="aui-input-addon">手机号</span>
+					<input type="text" class="aui-input" id='tel'>	    
+				</div>
+				<div class="aui-input-row">
+					<span class="aui-input-addon">设置密码</span>
+					<input type="password" class="aui-input" id='pwd'>
+				</div>
+			</div>	
+		</div>
+		<div class='readed'>
+		   <label><input type="checkbox" style="width:30px !important"/> 我已阅读并同意<a href="">兼职e族用户协议</a></label>
+		</div>
+		<div class="aui-btn aui-btn-block aui-btn-success" onclick="openWin('./code.html')">下一步</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js" ></script>
+<script type="text/javascript" src="../script/aui-dialog.js" ></script>
+<script type="text/javascript">
+	apiready = function(){
+//	    var header=$api.dom(header); 
+//	    $api.fixStatusBar(header);
+	};
+    
+	var toast = new auiToast({});
+    var dialog = new auiDialog({});
+    
+    function openWin(url){
+       var tel = $("#tel").val();
+		if ($.trim(tel)==""){
+		     toast.fail({
+                    title:"号码不能为空！",
+                    duration:2000
+                });
+                 return;
+    }
+	    var pwd=$('#pwd').val();
+	    if($.trim(pwd)==''){
+	       toast.fail({
+	            title:'密码不能为空！',
+	            duration:2000
+	       })
+	       return;
+	    }
+        var user = {};
+		user.tel = tel;
+		user.pwd = pwd;
+		$api.setStorage(user);
+		request();
+	 	 dialog.alert({
+                        title:"验证码将发送到",
+                        msg:tel,
+                        buttons:['修改','确认']
+                    },function(ret){
+                      if(ret.buttonIndex==2){
+                   	    api.showProgress({
+					    title: '努力加载中...',
+						    text: '先喝杯茶...',
+					    modal: false
+						});
+                           request();
+                        }
+                    });
+   }
+		
+		    function request(){
+				var tel = $("#tel").val();
+				api.ajax({
+			   url: 'http://106.14.69.92/Appmanager/login?username=tel&password=pwd',
+			    method: 'get',
+	     },function(ret, err){
+				api.hideProgress();
+			    if (ret) {	
+			        api.toast({
+			            msg:'验证码发送成功'
+		            });
+		            api.openWin({
+						name: 'code',
+						url: './code.html',
+						progress:{
+							type:"default"
+								  },
+						});
+			    } else {
+			        api.toast({
+			            msg:ret.message
+		            });
+			    }
+			});
+			} 
+ 
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	.aui-bar-nav{
+    	background:#fff;
+    	color:#000;
+    	margin-bottom:0.5rem;
+    	}
+    	.aui-btn{
+    	background:#99cc33;
+    	border-radius:0.5rem;
+    	border:none;
+    	width:96%;
+    	margin:0 auto;
+    	}
+    .aui-card:after{
+      border-radius:2px !important;
+       }
+     .aui-input-row{
+     padding-left:10px;
+     padding-right:10px;
+     }
+    	.password{
+    	height:2rem;
+    	line-height:2rem;
+    	font-size:0.75rem;
+    	width:5rem;
+    	text-align:center;
+    	display:inline-block;
+    	margin-top:0.3rem;
+    	color:#fff;
+        background:#ff6600;
+        border-radius: 3px;
+    	}
+    	input{
+    	display: inline;
+    	width:60% !important; 
+    	}
+    	h5{margin:0.5rem 1rem}
+    </style>
+</head>
+<body>
+	
+	<header class="aui-bar aui-bar-nav" style='padding-top:20px;' id='header'>
+		<a class="aui-pull-left">
+			<span class="aui-iconfont aui-icon-left" style="color:#ff6600" onclick="api.closeWin();"></span>
+		</a>
+		<div class="aui-title">注册</div>
+	</header>
+		<h5>验证码信息会发送到你的手机： <span id="tel">15161178888</span></h5>
+	   <div class="aui-card">
+			<div class="aui-form">
+				<div class="aui-input-row">
+					<span class="aui-input-addon">验证码</span>
+					<input type="text" class="aui-input" id='code'>	    
+				</div>
+
+			</div>	
+		</div>
+		<div class="aui-btn aui-btn-block aui-btn-success" onclick="register()">下一步</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	var tel = "";
+	var email = "";
+	var pwd = "";
+	apiready = function(){
+		var header = $api.byId('header');
+        //适配iOS7+，Android4.4+状态栏沉浸式效果，详见config文档statusBarAppearance字段
+        $api.fixStatusBar(header);
+        var key = 'usercache';
+		var user = $api.getStorage(key);
+		tel = user.tel;
+		email = user.email;
+		pwd = user.pwd;
+		$("#tel").text(tel);
+        
+	};
+	
+	function register(){
+	    var code = $("#code").val();
+		api.ajax({
+	    url: 'http://106.14.69.92/Appmanager/send/sms?phone=tel',
+	    method: 'get',
+	}, function(ret, err) {
+		console.log(JSON.stringify(ret));
+	    if (ret) {
+	        api.toast({ msg: JSON.stringify(ret.message) });
+	        var key = 'user';
+			var user = {};
+			user.flag = 1;
+			$api.setStorage(key, user);
+			
+	        api.openWin({
+	            name: 'root',
+	            url: '../index.html',
+	            pageParam:'123',
+	            reload:true
+            });
+	    } 
+	    else{
+	    api.toast({ msg: ret.message });	
+	    }
+	});
+	}
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

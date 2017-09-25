@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+        .aui-pull-right{display:line-block;margin-top:0.5rem;margin-right:0.5rem}
+    	.listgroup{ font-size:0.9rem;}
+    	.aui-list-view:after{border:none}
+		.aui-list-view-cell{padding:8px;}
+		.aui-list-view-cell:after{border:none}
+		.aui-list-view-cell:active{background:#c3eaf0}
+		.aui-list-view-cell:last-child:after{border:none} 
+		.aui-list-view-cell img{width:35px;height:35px;vertical-align: middle;margin-right:0.5rem;margin-left:0.2rem}
+    </style>
+</head>
+<body>
+    <div class='listgroup'>
+		 <ul class="aui-list-view">
+		 	<li class="aui-list-view-cell" data-win="list_arrow" onclick="showTalk()">
+		 		<img src="../image/eperson.png"/>客服小助手<p class="aui-pull-right">时间</p>
+		 	</li>
+		 	<li class="aui-list-view-cell" data-win="list_thumb">
+		 		<img src="../image/smile.png"/>待招服务助手
+		 	</li>
+		 	<li class="aui-list-view-cell share" data-win="list-image">
+		 		<img src="../image/news.png"/>推荐分享
+		 	</li>
+		 </ul>
+     </div>		
+	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type='text/javascript'>
+ 
+	apiready=function(){
+       $('.aui-pull-right').text(getNowFormatDate());
+       var mq = api.require('meiQia');
+		//配置初始化美洽需要的appkey
+		var param = {
+		    appkey: "6ac808a5ce4a502aace6a51e69bb6218"
+		};
+		//初始化美洽
+		mq.initMeiQia(param, function(ret, err) {
+		    if (ret) {
+		        //初始化成功
+		        console.log(JSON.stringify(ret));
+		    } else {
+		        //初始化失败
+		          console(JSON.stringify(err))
+		    }
+		})
+		  
+	}
+	function getNowFormatDate(){
+	    var date = new Date();
+	    var seperator1 = "-";
+	    var month = date.getMonth() + 1;
+	    var strDate = date.getDate();
+	    if (month >= 1 && month <= 9) {
+	        month = "0" + month;
+	    }
+	    if (strDate >= 0 && strDate <= 9) {
+	        strDate = "0" + strDate;
+	    }
+	    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate           
+	    return currentdate;
+	}
+	
+	 function showTalk(){
+//	  _MEIQIA('showPanel')
+        var mq = api.require('meiQia');
+		mq.show();
+	    getMessage();
+	 }
+	 
+	 function getMessage(){
+	 var username=$api.getStorage('username');
+	   api.ajax({
+	         url:'http://106.14.69.92/Appmanager/login/selectInfo?username='+username
+       },function(ret,err){
+        var mq = api.require('meiQia');
+       var infoParam = {
+                "申请人姓名": ret.name, // 美洽默认字段
+		        "身份证号": ret.cardnum, // 美洽默认字段
+		        "企业代码": ret.phone, // 自定义字段
+		        "企业名称": ret.school // 自定义字段
+		};
+		mq.setClientInfo(infoParam);
+       });
+
+    }
+</script>
+
+</html>

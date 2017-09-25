@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+    .nav-wrapper{display:flex;height:18%;padding:0.5rem 1.5rem 0.5rem 1rem;background:#fff;margin-bottom:0.5rem}
+    .left{flex:1}
+    .left .kind{color:#ff6600;font-size:0.8rem;display:inline-block;margin:0.5rem 0;padding-left:0.5rem}
+    .right .amount{font-size:1.4rem;margin-top:0.5rem;margin-bottom:0.3rem;color:#ff6600}
+    .aui-input-row{padding:8px 10px;}
+    .data{padding-left:1rem;font-size:0.95rem;height:1.5rem;line-height:1.5rem}
+    .content{padding:0.5rem 1rem;color:#000}
+    .textarea{background:#fff;padding:0.5rem 1rem;font-size:0.95rem;border:1px solid #c8c7cc;min-height:6rem;width:100%;}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style='padding-top:20px;'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">兼职详情</div>
+	</header>
+   <div id="evaluation">	
+      <script id="evaluationtmpl" type="text/x-dot-template">
+		<div class="nav-wrapper">
+		   <div class="left">
+			   <h1>{{=it.title}}</h1>
+			   <span class='kind'>日结</span>
+			   <p class='time'>{{=it.createtime}}</p>
+		   </div>
+		   <div class="right">
+		      <h1 class='amount'>{{=it.money}}.00</h1>
+		      <p>{{=it.name}}</p>
+		   </div>
+		</div>
+		 <div class="aui-form">
+			<div class="aui-input-row">
+				<span class="aui-input-addon">岗位类型</span>
+				<div class='data'>{{=it.workname}}</div>
+			</div>
+			<div class="aui-input-row">
+				<span class="aui-input-addon">招聘人数</span>
+				<div class='data'>{{=it.number}}</div>
+			</div>
+			<div class="aui-input-row">
+				<span class="aui-input-addon">招聘性别</span>
+				<div class='data'>不限</div>
+			</div>
+			<div class="aui-input-row">
+				<span class="aui-input-addon">工作时间</span>
+				<div class='data'>{{=it.datebegin}}~{{=it.dateend}}</div>
+			</div>
+			<div class="aui-input-row">
+				<span class="aui-input-addon">工作时段</span>
+				<div class='data'>{{=it.timebegin}}~{{=it.timeend}}</div>
+			</div>
+			<div class="aui-input-row">
+				<span class="aui-input-addon">工作地点</span>
+				<div class='data'>{{=it.areaname}} {{=it.address}}</div>
+			</div>
+	     </div>
+	     <p class='content'>工作内容</p>
+		<div class='textarea'>{{=it.description}}</div>
+    </script>
+ </div>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+     apiready=function(){
+		     var header=$api.byId('header');
+		     var headerH=$api.offset(header).h;
+		     request();
+	  }   
+	  function request(){
+	  var pageParms = api.pageParam;
+	  var wid = pageParms.wid;
+//     var wid=$api.getStorage('wid');
+	  console.log(wid)
+	   api.ajax({
+	       url:' http://106.14.69.92/Appmanager/Jzmanagement/details?wid='+wid,
+	       method:'get'
+       },function(ret,err){
+       	  console.log(JSON.stringify(ret))
+       	  if(ret){
+       	    var data=ret;
+        	console.log(JSON.stringify(data))
+        	var evalText = doT.template($("#evaluationtmpl").text());
+			$("#evaluation").html(evalText(data));
+       	  
+       	  }
+       });
+	  }  
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

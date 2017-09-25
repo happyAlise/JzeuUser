@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-bar{background:#fff}
+    .aui-title{color:#000000}
+    .aui-input-addon{padding-left:0.8rem !important;font-size:1rem;padding:10px !important;}
+    input{font-size:0.8rem !important;}
+    .aui-input-row{width:100%}
+     .safety{display:block;font-size:0.6rem;background:#f1f8ff;padding:1rem}
+    .aui-btn-block{background:#ff6600;height:2.5rem;padding:0;line-height:2.5rem;width:90%;margin:0 auto;color:#fff;font-size:0.9rem}
+    </style>
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav" id="header" style='padding-top:20px;'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">充值</div>
+	</header>
+	<div class="aui-form" style="margin-top:0.4rem;">
+	    <div class="aui-input-row">
+			<span class="aui-input-addon">充值金额(RMB)</span>
+		</div>
+		<div class="aui-input-row">
+			<input type="text" class="aui-input amount" placeholder="请输入充值金额">
+		</div>
+
+		<span class='safety'>* 注：您充值的金额可随时进行提现</span>
+	</div> 
+	<div class="aui-btn aui-btn-block" onclick="recharge()">确认充值</div>
+	
+	
+	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var header=$api.dom('header');
+		$api.fixStatusBar(header);
+    }
+   function recharge(){
+      api.ajax({
+	      url:'http://106.14.69.92/Appmanager/Enplay/secretkey'
+      },function(ret,err){
+        if(ret){
+      	  var obj = api.require('aliPay');
+                var subject = '订单标题';
+                var body = '订单描述';
+                var amount =$('.amount').val();
+                var tradeNO1 = tradeNO();
+                var notifyURL ='http://106.14.69.92/Appmanager/Enplay/accpetInfo';				
+                   obj.config({
+                        partner:ret.partner,
+                        seller:ret.seller,
+                        rsaPriKey:ret.rsa_PRIVATE,
+                        rsaPubKey:'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5bG3IxliCi73rQy58b5tCa3Y+tbt5LanuJPZ5XldTB+u0+CS+x7KZVEEw5EL/xfbptJVZaEDw5Yht+rY8j7pkn1oJHefA8duJjrNCkov8+Tvie/KyCzRrarylxnhrmLwylFvvUKBnBBorSNkpAYJdRFwBzLGOE1Isucg8aw0WZQIDAQA',
+                        notifyURL:notifyURL
+                }, function(ret, err){
+		                        obj.pay({
+		                        subject : subject,
+		                        body : body,
+		                        amount : amount,
+		                        tradeNO :tradeNO1
+		                }, function(ret, err){
+//				                 api.closeWin({});
+                              if(ret){
+                                $.ajax({
+                                      type:'POST',
+								      contentType:"application/json;charset=utf-8",
+								      url:'http://106.14.69.92/Appmanager/Enplay/Recharge',
+								      data:JSON.stringify(jsondata()),
+								      dataType:'json',
+								      success:function(msg){
+								          alert(JSON.stringify(msg))	
+								          console.log(JSON.stringify(msg))
+								           },
+								      error:function(err){
+								             alert(JSON.stringify(err))
+								           }                  
+                                 })
+                                 }else{
+                                 alert('err')
+                                 
+                                 }
+		                     }) 				    
+					  })               
+		      }			  					  
+      })   
+   }
+   
+   /*获取当前时间字符串+两位随机数,获取当前时间*/
+  var time;
+	  function tradeNO(){   
+        var now = new Date();    
+        var year = now.getFullYear();       //年   
+        var month = now.getMonth() + 1;     //月   
+        var day = now.getDate();            //日
+
+        var hh = now.getHours(); //时
+        var mm = (now.getMinutes() ) % 60;  //分
+        if ((now.getMinutes() ) / 60 > 1) {
+            hh += Math.floor((now.getMinutes() ) / 60);
+        }        
+        var clock = year;  
+         time=year+"-"; 
+        var randomNum= parseInt(Math.random()*(99-10+1)+10);
+        if(month < 10)   
+        clock += "0";            
+        clock += month;   
+         time +=month+'-';
+         
+        if(day < 10)   
+        clock += "0";                
+        clock += day;  
+        time +=day+" "
+         
+        if(hh < 10)   
+         clock += "0";                
+        clock += hh;  
+        time +=hh+':' 
+        
+        if (mm < 10) clock += '0';   
+        clock += mm;   
+        time +=mm
+       var  tradeNO1=clock+randomNum
+        return tradeNO1;
+    } 
+    
+      	
+    function jsondata(){
+    var username=$api.getStorage('username');
+      var json={
+        "time":time,
+//      
+        "money":$('.amount').val(),
+        "odrernum":tradeNO(),
+        "rechargetype":"支付宝充值",
+        "username":username     
+      } 
+      console.log(time)
+      console.log($('.amount').val()),
+      console.log(username)
+      console.log(tradeNO())
+      return json;
+    }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

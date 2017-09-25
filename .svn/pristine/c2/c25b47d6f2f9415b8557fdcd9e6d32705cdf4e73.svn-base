@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+       .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+       .title{display:inline-block}
+       .aui-list-view{border-bottom: 1px solid #c8c7cc;}
+       .aui-list-view-cell{padding:0}
+       .aui-list-view-cell:after{border:none !important}
+       .hightlight{background:#41c7db}
+       .checkbox{margin-right:0.5rem;background:#fff !important;}
+       .left,label{display:inline-block;height:3rem;line-height:3rem;padding:0 18px}
+       .left{width:60%;}
+       .name{display:inline-block;margin-left:0.3rem;position:relative;top:-0.8rem}
+       .aui-btn{background:#FF6600;border-radius: 2px;height:2.5rem;
+       line-height:2.5rem;font-size:0.9rem;border:none;padding:0;
+       position:fixed;bottom:0;
+       }
+       .aui-btn:active{background:#666}
+       i{display:none}
+       .imgdesc{height:2.5rem;margin-top:0.5rem;border-radius:50%}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style='padding-top:20px;'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">现场录用</div>
+	</header>
+	<ul class="aui-content aui-list-view" id="evaluation">	
+		   <script id="evaluationtmpl" type="text/x-dot-template">
+			 {{ for(var i in it) { }}
+			       	 <li class="aui-list-view-cell" onclick="fnaddbackground('{{=i}}')">
+			       		<div class='left' onclick="openwin('{{=it[i].name}}','{{=it[i].phone}}','{{=it[i].imgurl}}','{{=it[i].home}}','{{=it[i].number}}','{{=it[i].qq}}')">
+				       	    {{ if(it[i].url==""||null) { }}
+							     <img src='../image/awatar.png' class='imgdesc'/>
+							{{ } }}
+							{{ else{ }}
+							     <img src='{{=it[i].imgurl}}' class='imgdesc'/>
+						     {{ } }}
+				       		<div class='name'>{{=it[i].name}}</div>
+			       		</div><label class='aui-pull-right'><input type="checkbox" class='checkbox'/>录用</label>	
+			       		<i>{{=it[i].id}}</i>		       		
+			         </li>
+			  {{ } }}
+	       </script>
+	</ul>
+	 <div class="aui-btn aui-btn-block aui-btn-success" onclick="submit()">确认提交</div>	   
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	  var header=$api.dom('header');
+      $api.fixStatusBar(header);
+       api.showProgress({
+		    title: '努力加载中...',
+			text: '先喝杯茶...',
+		    modal: false
+	    });	
+      request();
+	}
+	var length;
+	var uid;  //定义一个全局变量；
+	var check;//复选框是否勾选；
+//		 var wid=$api.getStorage('wwid');
+//	    console.log(wid)
+    var wid='354'
+	function request(){
+	    api.ajax({
+	     url:'http://106.14.69.92/Appmanager/Release/Employment?wid='+wid   /*wid*/
+     },function(ret,err){
+     	if(ret){
+     	 console.log(JSON.stringify(ret))
+     	 length=ret.length;
+     	var data=ret;
+        var evalText = doT.template($("#evaluationtmpl").text())
+		$("#evaluation").html(evalText(data));
+		fnhistory();
+	    api.hideProgress();	     	 
+     	}
+     })	
+	}
+	/*查看个人信息的页面*/
+   function openwin(name,phone,img,home,number,qq){                 
+      api.openWin({
+		    name: 'positionmsg',
+		    url: './positionmsg.html',
+		    pageParam:{
+		        'name':name,
+		        'phone':phone,
+		        'img':img,
+		        'home':home,
+		        'number':number,
+		        'qq':qq		        
+		        }
+	    })   
+   }   
+    function fnaddbackground(i){
+		$('.aui-list-view-cell').eq(i).addClass('hightlight').siblings().removeClass('hightlight');	
+	}
+
+	/*提交*/
+   function submit(){ 
+	  $.ajax({
+        type:'POST',
+        contentType: "application/json;charset=utf-8",
+	    url:'http://106.14.69.92/Appmanager/Release/EmpSubm',
+	    data:JSON.stringify(getdatajson()),
+	    success:function(msg){
+	      api.toast({
+	          msg:'提交成功！'
+          });
+	    },
+	    error:function(data){
+	        console(JSON.stringify(err))
+	    }
+    })
+  }
+  function getdatajson(){
+    var json=[]
+     for(var i=0;i<length;i++){
+        var agree=$('.aui-list-view-cell').eq(i).find('input').is(':checked');
+         check=agree?1:0;
+        var usid=$('.aui-list-view-cell').eq(i).find('i').text();
+         uid=usid;
+       json.push({"uid":uid,"wid":wid,"status":check})
+     } 
+     console.log(JSON.stringify(json))    
+      return json;
+  }
+  /*再次打开保留原始信息*/
+  function fnhistory(){ 
+	   api.ajax({
+	       url:'http://106.14.69.92/Appmanager/Release/EmploymentInfo?wid='+354
+       },function(ret,err){
+       	  if(ret){
+       	   for(var i=0;i<length;i++){
+       	   console.log(ret[i].ly)
+       	      if(ret[i].ly==1){
+       	         $('.aui-list-view-cell').eq(i).find('input').attr('checked',true);   	      
+    	      }else{
+    	         $('.aui-list-view-cell').eq(i).find('input').attr('checked',false); 	      
+    	      }
+       	   }
+       	  }
+       });
+	}
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+

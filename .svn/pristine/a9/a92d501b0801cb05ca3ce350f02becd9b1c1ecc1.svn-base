@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-bar-nav{background-color:#f1f8ff;margin-bottom:0.5rem;padding-top:20px}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title"></div>
+	</header>
+	<section>
+	  <h1>发布成功</h1>
+	</section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+			api.addEventListener({
+				name : 'keyback'
+			}, function(ret, err) {
+			   console.log(ret)		   
+				if (ret) {
+					api.openWin({
+	                    name: 'root',
+	                    url: '../index.html'
+                    });
+				}
+			});
+	};
+</script>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="../css/aui.css">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+       .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem;padding-top:25px;}
+       .row{display:flex;height:2.5rem;line-height:2.5rem;font-size:0.9rem}
+     .title{
+    	border:1px solid #ededed;
+    	border-right:none;
+    	padding: 0 10px !important;
+    	color:#666;
+    	display:inline-block;
+    	width:6.5rem;
+    	flex:0 0 6.5rem;
+    	text-align:center;
+    	border-bottom:none;
+    	box-sizing:border-box
+    	}
+       .aui-btn-block {
+	    display: block;
+	    width: 95%;
+	    padding: 8px 0;
+	    margin:1rem auto 1.5rem;
+	    font-size: 16px;
+	    border-radius:6px;
+	    background:#0cf;
+	    border:none;	
+	   }
+	   .aui-form{margin-top:2rem}
+	   .aui-btn-block:active{background:rgba(0,0,0,0.2);border:none}
+    	.yue{display:inline-block;padding-top:0.7rem !important;color:#0cf}
+    	.shiti{border:1px solid #ededed !important;border-top:none !important;box-sizing:border-box;padding:0;height:2.5rem;
+    	line-height:1rem;flex:1;padding-left:1rem;border-radius:0 !important}
+    	.tips{margin-top:0.5rem;margin-left:1rem;font-size:0.8rem}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">提现</div>
+	</header>
+	<div class="aui-form">
+		<div class="row">
+			<span class="title">账户余额</span>
+			<span class="shiti yue" style='border-top:1px solid #ededed !important'>30.00</span>
+		</div>
+		<div class="row">
+			<span class="title">转出金额</span>
+			<input class="shiti cash" type='text' placeholder="请输入转出金额">
+		</div>
+		<div class="row">
+			<span class="title">支付宝账号</span>
+			<input class="alipay shiti"  type='text' placeholder="请输入支付宝账号">
+		</div>
+		<div class="row">
+			<span class="title" style='border-bottom:1px solid #ededed'>账户姓名</span>
+			<input class="shiti name"  type='text' placeholder="请输入账户姓名">
+		</div>		
+	</div> 
+	<p class='tips'>*提示:请确认输入账号无误，预计一个工作日内到账</p>
+		<div class="aui-btn aui-btn-block aui-btn-success" onclick='pushcash()'>确认转出</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+     var sumMoney;
+     var sumMoney1;
+     var wid=$api.getStorage('wwid');
+     var username=$api.getStorage('username');
+	apiready = function(){
+	
+      api.ajax({
+	      url:'http://106.14.69.92/Appmanager/Enplay/balance?username='+username
+      },function(ret,err){
+      	 if(ret){
+      	   sumMoney=ret.moeny
+      	   $('.yue').text(sumMoney)
+      	 }
+      }) 
+	}	
+	function pushcash(){
+	  var cash= $('.cash').val();
+	  if(!(cash.match(/^[1-9][0-9]*$/))){
+	     api.toast({
+	         msg:'提现金额必须是正整数'
+         });
+         return;
+	  }
+	  if(cash>sumMoney){
+	       api.toast({
+	         msg:'账户余额不足'
+         });
+         return;
+	  }
+	var alipay=$('.alipay').val();
+	var email = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(!(email.test(alipay)||/^1[34578]\d{9}$/.test(alipay))){
+           api.toast({
+	          msg:'支付宝账号有误，请重新填写'
+	      });
+          return;
+         }
+         var name=$('.name').val();
+        if(!name){
+         api.toast({
+	          msg:'姓名不得为空'
+	      });
+	       return;
+        }
+         request();
+	}
+	
+ function request(){
+     $.ajax({
+          type:'POST',
+	      contentType:"application/json;charset=utf-8",
+	      url:'http://106.14.69.92/Appmanager/Enplay/withdraw',
+	      data:JSON.stringify(jsondata()),
+	      dataType:'json',
+	      success:function(msg){
+	          if(msg.result=='success'){
+	              api.toast({
+	                  msg:'提现成功'
+                  })
+                    api.ajax({
+					      url:'http://106.14.69.92/Appmanager/Enplay/balance?username='+username
+				      },function(ret,err){
+				      	 if(ret){
+				      	   sumMoney1=ret.moeny
+				      	 }
+				      }) 
+				      setTimeout('delay()',500)
+                
+              }else{
+                alert(JSON.stringify(msg))
+              }
+	         },
+	      error:function(err){
+	             alert(JSON.stringify(err))
+	           }                  
+        })  
+   }
+   function delay(){
+       console.log(sumMoney1)
+       api.execScript({
+			name:'bs_mywallet',
+			frameName:'bs_mywallet_frame',
+            script: 'update("'+sumMoney1+'");'
+        })
+	      api.closeToWin({
+	          name:'bs_mywallet'
+	      })
+   }
+   function jsondata(){
+      var username=$api.getStorage('username');
+      var json={
+        "time":time,   
+        "money":$('.cash').val(),
+        "odrernum":tradeNO(),
+        "rechargetype":"提现",
+        "username":username,
+        "wid":wid,
+        "user":$('.alipay').val(),
+        "subject":$('.name').val()     
+      } 
+      return json;
+    }
+   /*获取当前时间字符串+两位随机数,获取当前时间*/
+  var time;
+	  function tradeNO(){   
+        var now = new Date();    
+        var year = now.getFullYear();       //年   
+        var month = now.getMonth() + 1;     //月   
+        var day = now.getDate();            //日
+
+        var hh = now.getHours(); //时
+        var mm = (now.getMinutes() ) % 60;  //分
+        if ((now.getMinutes() ) / 60 > 1) {
+            hh += Math.floor((now.getMinutes() ) / 60);
+        }        
+        var clock = year;  
+         time=year+"-"; 
+        var randomNum= parseInt(Math.random()*(99-10+1)+10);
+        if(month < 10)   
+        clock += "0";            
+        clock += month;   
+         time +=month+'-';
+         
+        if(day < 10)   
+        clock += "0";                
+        clock += day;  
+        time +=day+" "
+         
+        if(hh < 10)   
+         clock += "0";                
+        clock += hh;  
+        time +=hh+':' 
+        
+        if (mm < 10) clock += '0';   
+        clock += mm;   
+        time +=mm
+       var  tradeNO1=clock+randomNum
+        return tradeNO1;
+    } 
+    
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

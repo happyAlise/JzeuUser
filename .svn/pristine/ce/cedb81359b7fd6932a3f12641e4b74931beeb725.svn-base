@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+
+    <style>
+       .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+       .title{display:inline-block}
+       .aui-list-view{border-bottom: 1px solid #c8c7cc;}
+       .aui-list-view-cell{padding:0}
+       .aui-list-view-cell:after{border:none !important}
+       .hightlight{background:#41c7db}
+       .checkbox{margin-right:0.5rem;background:#fff !important;}
+      .left,label{display:inline-block;height:3rem;line-height:3rem;padding:0 18px}
+       .left{width:60%;}
+       .name{display:inline-block;margin-left:0.3rem;position:relative;top:-0.8rem}
+       .aui-btn{background:#FF6600;border-radius: 2px;height:2.5rem;
+       line-height:2.5rem;font-size:0.9rem;border:none;padding:0;
+       position:fixed;bottom:0;
+       }
+       .aui-btn:active{background:#666}
+       i{display:none}
+       .imgdesc{height:2.5rem;margin-top:0.5rem;border-radius:50%}
+       /*支付窗口*/
+        .input-wrapper{
+	        width:100%;
+	        padding-top:0.5rem;
+	        padding-bottom:0.3rem;
+           background:#fff;
+           position:fixed;
+           font-family: Arial;
+           top:2rem;
+           display:none;
+           z-index:3;
+           border-radius:4px;
+        }
+        .close{position:absolute;top:0.2rem;left:0.7rem;width:2rem}
+        .qsrzfmm{border-bottom:1px solid #ededed;margin-bottom:0.2rem}
+        h1{margin-left:4rem;height:2.5rem;font-size:1rem;}
+        .blank_yh{padding-left:1rem;border-top:1px solid #ededed;border-bottom:1px solid #ededed;margin-bottom:10px}
+        .cardname{position:relative;top:-0.8rem;font-size:14px}
+        .cardimg{width:2.5rem;position:relative;top:0.1rem}
+        .zfmmxx_shop{text-align:center}
+        .zfmmxx_shop .mz{font-size:14px}
+        .price{font-size:1.2rem}
+        .shade{position:fixed; _position:absolute;display:none; zoom:1; top:0; left:0; width:100%; height:100%; overflow:hidden; background:rgba(0,0,0,0.3); z-index:2;}
+        .inputbox{
+        /*    display: inline-block;*/
+            margin:0 auto;
+            text-align:center;
+        }
+        input[type='password']:last-child {
+             border-right: 1px solid #999;
+         }
+        input[type='password']{
+            border-top: 1px solid #909090;
+            border-bottom: 1px solid #909090;
+            border-left: 1px solid #909090;
+            border-right: 1px solid #909090;
+            width: 40px;
+            height: 40px;
+            outline:none;
+            font-family: inherit;
+            font-size:1rem;
+            font-weight: inherit;
+            text-align: center;
+            line-height: 40px;
+            color: #c2c2c2;
+            background: #fff;
+			border-radius: 5px;
+        }
+        .showNum{
+            width: 300px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border: 1px solid #cccccc;
+            margin:0 auto;
+            border-radius:5px;
+            background:rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+	<ul class="aui-content aui-list-view" id="evaluation"></ul>
+	 <div class="aui-btn aui-btn-block aui-btn-success" onclick="submit()">工资分批发放</div>	
+	   <div class='shade'></div>
+	   <div class="input-wrapper">   
+		    <div class="qsrzfmm"> 
+		         <img src="../image/xx_03.jpg" class="close"><h1 class="fl">请输入支付密码</h1> 
+		    </div>
+		    <div class="zfmmxx_shop">
+		      <div class="mz">共需支付:</div>
+		      <div class="price">￥11.90</div>
+		    </div>
+<!--		    <div class="blank_yh">
+		       <img src="../image/jftc_07.jpg" class="cardimg"><span class="cardname">xx银行信用卡</span>
+		    </div>-->
+
+			 <div class="inputbox">
+		        <input type="password" class="inpVal1" placeholder="" maxlength="1">
+		        <input type="password" class="inpVal2" placeholder="" maxlength="1">
+		        <input type="password" class="inpVal3" placeholder="" maxlength="1">
+		        <input type="password" class="inpVal4" placeholder="" maxlength="1">
+		        <input type="password" class="inpVal5" placeholder="" maxlength="1">
+		        <input type="password" class="inpVal6" placeholder="" maxlength="1">
+		    </div>
+		    <p class="showNum" onclick='fnpay()'>确认</p>   
+	  </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/pay.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+ <script id="evaluationtmpl" type="text/x-dot-template">
+	  {{ for(var i in it) { }}
+	       	 <li class="aui-list-view-cell" onclick="fnaddbackground('{{=i}}')">
+	       		<div class='left' onclick="openwin('{{=it[i].name}}','{{=it[i].phone}}','{{=it[i].imgurl}}','{{=it[i].home}}','{{=it[i].number}}','{{=it[i].qq}}')">
+		       	    {{ if(it[i].url==""||null) { }}
+					     <img src='../image/awatar.png' class='imgdesc'/>
+					{{ } }}
+					{{ else{ }}
+					     <img src='{{=it[i].imgurl}}' class='imgdesc'/>
+				     {{ } }}
+		       		<div class='name'>{{=it[i].name}}</div>
+	       		</div><label class='aui-pull-right'><input type="checkbox" class='checkbox'/>录用</label>	
+	       		<i>{{=it[i].id}}</i>		       		
+	         </li>
+	  {{ } }}
+ </script>   
+<script type="text/javascript">
+	apiready = function(){
+	  var header=$api.dom('header');
+      $api.fixStatusBar(header);
+      $('.inpVal1').focus();
+      request();
+      getmount();  /*预先请求金额*/
+   
+       api.setRefreshHeaderInfo({
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#ccc',
+				textColor : '#fff',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...',
+			    showTime:true
+			}, function(ret, err){
+				//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				if (ret) {
+					setTimeout('request()',3000)
+					api.refreshHeaderLoadDone();
+				}
+			})	
+	}
+	
+
+
+	
+	
+	
+	
+	var length;
+	var uid;  //定义一个全局变量；
+	var check;//复选框是否勾选；
+	var amount;
+	var subject;//兼职名称
+//		 var wid=$api.getStorage('wwid');
+//	    console.log(wid)
+    var wid='354'
+    
+ //初始化页面内容
+	function request(){
+	    api.ajax({
+	     url:'http://106.14.69.92/Appmanager/Release/Employment?wid='+wid   /*wid*/
+     },function(ret,err){
+     	if(ret){
+     	 length=ret.length;
+     	var data=ret;
+        var evalText = doT.template($("#evaluationtmpl").text())
+		$("#evaluation").html(evalText(data));   	 
+		 fnhistory();  
+     	}
+     })	
+	}
+	/*查看个人信息的页面*/
+   function openwin(name,phone,img,home,number,qq){                 
+      api.openWin({
+		    name: 'positionmsg',
+		    url: './positionmsg.html',
+		    pageParam:{
+		        'name':name,
+		        'phone':phone,
+		        'img':img,
+		        'home':home,
+		        'number':number,
+		        'qq':qq		        
+		        }
+	    })   
+   }   
+    function fnaddbackground(i){
+		$('.aui-list-view-cell').eq(i).addClass('hightlight').siblings().removeClass('hightlight');	
+	}
+	
+//获取需要结算工资的人和人数	
+    var sum;
+    var user;
+	 function getuiNum(){ 
+       var uidarray=[]   
+     for(var i=0;i<length;i++){
+        var agree=$('.aui-list-view-cell').eq(i).find('input').is(':checked');
+         if(agree){
+          var userid=$('.aui-list-view-cell').eq(i).find('i').text();
+          uidarray.push(userid)
+         }
+     } 
+     console.log(JSON.stringify(uidarray))   
+     sum=uidarray.length;
+     user=uidarray.join(",");
+     console.log(user)
+   }
+   
+   
+	/*点击分批发放工资出现悬浮窗*/
+	function submit(){ 
+	$("input[type='password']").val("");//再次打开悬浮窗将密码清空
+	    getuiNum();    //获取需要结算工资的人数
+	if(sum==0){
+       alert('请先选择要发放工资的人员');
+	}else if(amount*sum>40){
+	    alert('钱包余额不足哦~')
+	}else{
+        $('.input-wrapper').show();
+        $('.shade').show();
+        $('.price').text('￥'+amount*sum);      
+      }
+ }
+   //关闭隐藏悬浮窗
+     $('.close').click(function(){
+	   $('.input-wrapper').hide();
+	   $('.shade').hide()
+	})
+
+  /*再次打开保留原始信息*/
+function fnhistory(){ 
+	   api.ajax({
+	       url:'http://106.14.69.92/Appmanager/Release/EmploymentInfo?wid='+354
+       },function(ret,err){
+       	  if(ret){
+       	   for(var i=0;i<length;i++){
+       	   console.log(ret[i].ly)
+       	      if(ret[i].ly==1){
+       	         $('.aui-list-view-cell').eq(i).find('input').attr('checked',true);   	      
+    	      }else{
+    	         $('.aui-list-view-cell').eq(i).find('input').attr('checked',false); 	      
+    	      }
+       	   }
+       	  }
+       })
+	}
+	
+	
+ 
+   /*获取当前时间字符串+两位随机数,获取当前时间*/
+  var time;
+	  function tradeNO(){   
+        var now = new Date();    
+        var year = now.getFullYear();       //年   
+        var month = now.getMonth() + 1;     //月   
+        var day = now.getDate();            //日
+
+        var hh = now.getHours(); //时
+        var mm = (now.getMinutes() ) % 60;  //分
+        if ((now.getMinutes() ) / 60 > 1) {
+            hh += Math.floor((now.getMinutes() ) / 60);
+        }        
+        var clock = year;  
+         time=year+"-"; 
+        var randomNum= parseInt(Math.random()*(99-10+1)+10);
+        if(month < 10)   
+        clock += "0";            
+        clock += month;   
+         time +=month+'-';
+         
+        if(day < 10)   
+        clock += "0";                
+        clock += day;  
+        time +=day+" "
+         
+        if(hh < 10)   
+         clock += "0";                
+        clock += hh;  
+        time +=hh+':' 
+        
+        if (mm < 10) clock += '0';   
+        clock += mm;   
+        time +=mm
+       var  tradeNO1=clock+randomNum
+        return tradeNO1;
+    } 
+    
+   
+  function fnpay(){
+            var inpVal1=$('.inpVal1').val();
+            var inpVal2=$('.inpVal2').val();
+            var inpVal3=$('.inpVal3').val();
+            var inpVal4=$('.inpVal4').val();
+            var inpVal5=$('.inpVal5').val();
+            var inpVal6=$('.inpVal6').val();
+            var val=inpVal1+""+inpVal2+""+inpVal3+""+inpVal4+""+inpVal5+""+inpVal6;
+//         var mima=$api.getStorage('mima');
+            if(val!='123456'){
+               api.toast({
+	               msg:'密码输入错误！'
+               });
+               return;
+            }
+      	  $.ajax({
+	        type:'POST',
+	        contentType: "application/json;charset=utf-8",
+		    url:'http://106.14.69.92/Appmanager/Enplay/Expenditure',
+		    data:JSON.stringify(getjson()),
+		    success:function(msg){	
+	          api.openWin({
+	              name: 'zfdetail',
+	              url: './zfdetail.html',
+	              pageParam:{
+	                 "time":time,   
+			        "money":amount*sum,
+			        "odrernum":tradeNO(),
+			        "rechargetype":"支付宝转账",
+			        "subject":subject 
+	              }
+              });
+		    },
+		    error:function(data){
+		        console.log(JSON.stringify(data))
+		    }
+    }) 
+  }
+  function getjson(){
+	      var username=$api.getStorage('username');
+	      var json={
+	        "time":time,   
+	        "money":amount*sum,
+	        "odrernum":tradeNO(),
+	        "rechargetype":"支付宝转账",
+	        "username":username,
+	        "wid":"354",
+	        "user":user,
+	        "subject":subject  
+	      } 
+	      console.log(user)
+	      console.log(sum)
+	      console.log(time)
+	      console.log(username)
+	      console.log(tradeNO())
+	      console.log(wid)
+	      return json;
+    }
+  
+  
+ 
+   	
+  //获取本兼职的工资金额 
+ function getmount(){
+  api.ajax({
+	       url:'http://106.14.69.92/Appmanager/Jzmanagement/details?wid=358', /*wid*/
+	       method:'get'
+         },function(ret,err){
+          if(ret){
+          amount=ret.money; 
+          subject=ret.title     
+          }         
+         })
+ }
+    
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+

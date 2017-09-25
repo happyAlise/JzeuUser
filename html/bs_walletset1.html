@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+      html,body{background:#fff;font-size:0.9rem}
+       li{border-top:1px solid #ededed;overflow:auto;padding:0.5rem 1rem;}
+       li:active{background:#ededed}
+        li:last-child{border-bottom:1px solid #ededed}
+       div{width:100%;background:#fff;}
+       .bottom{clear:both;margin-top:1.5rem}
+       .money{font-weight:700;font-size:0.95rem}
+       .time{font-size:0.8rem;}
+       .leave{font-size:0.8rem}
+       .nodata{font-size:0.85rem;margin:10rem auto;text-align:center;display:none}
+    </style>
+</head>
+<body>
+	<p class='nodata'>您当前没有任何支出</p>
+	<ul  id='evaluation'></ul>
+   <script id="evaluationtmpl" type="text/x-dot-template">
+		  {{ for(var i in it) { }}
+		  <li class="item"
+onclick="fnopendetail('{{=it[i].time}}','{{=it[i].money}}','{{=it[i].balance}}','{{=it[i].odrernum}}','{{=it[i].subject}}')">
+			     <div class="top">
+			        <span class='aui-pull-left'>{{=it[i].rechargetype}}</span>
+			        <p class='aui-pull-right time'>{{=it[i].time}}</p>
+			     </div>
+			     <div class="bottom">
+			         <span class='aui-pull-left leave'>余额:{{=it[i].balance}}</span>
+			         <span class='aui-pull-right money'>-{{=it[i].money}}</span>
+		        </div>			        
+	       </li>  
+		  {{ } }}
+     </script>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		income()
+	};
+		var username=$api.getStorage('username');
+	function income(){
+	 api.showProgress({
+	    msg:'加载中'
+     });
+	  api.ajax({
+	      url:'http://106.14.69.92/Appmanager/Enplay/Expenditurerecord?username='+username
+      },function(ret,err){     
+      	    if(ret.length){
+	        	var data=ret;
+	        	var evalText = doT.template($("#evaluationtmpl").text());
+				$("#evaluation").html(evalText(data));
+				api.hideProgress();
+	      }else{
+	        $('.nodata').css('display','block')
+	        api.hideProgress();
+	      }
+      });	
+	}
+	function fnopendetail(time,money,balance,odrernum,subject){
+	   api.openWin({
+	       name: 'bs_walletDetail1',
+	       url: './bs_walletDetail1.html',
+	       pageParam:{
+	           'time':time,
+	           'money':money,
+	           'balance':balance,
+	           'odrernum':odrernum,
+	           'subject':subject
+		   }
+       });
+	}
+	/*更新支出列表信息*/
+	   function uplist(){
+        income()		
+   }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

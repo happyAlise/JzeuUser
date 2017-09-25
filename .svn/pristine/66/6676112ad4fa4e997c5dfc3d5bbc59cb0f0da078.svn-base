@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+       .head-wrapper{display:flex;height:22vh;width:100%;background:#ff6666;color:#fff;}
+       h3{margin-bottom:1.5rem;margin-top:0.5rem;font-weight:normal;font-size:0.85rem}
+       h2{margin-left:0.5rem}
+       .amount{flex:1;padding:1rem;}
+       .recharge{display:flex;flex:1;justify-content:space-around;position:relative;bottom:-14vh;font-size:0.9rem;margin-right:0.5rem}
+       .recharge div{border:1px solid #fff;height:1.5rem;line-height:1.5rem;width:3.5rem;text-align: center;border-radius:3px;}
+       
+       .iebtn{width:100%;font-size:0.9rem;height:2.5rem;line-height:2.5rem;text-align:center;clear:both;}
+       .income{width:50%;}
+       .expense{width:50%;position:relative;left:50%;top:-2.5rem}
+       .selected{border-bottom:2px solid #41c7db;color:#ff6600}
+    </style>
+</head>
+<body>
+  
+  <div class="aui-content-padded" id='wrapper'>
+	<div class="head-wrapper" id='headerf'>
+	    <div class="amount">
+	       <div><h3>当前金额(RMB)</h3><h2 id='money'>0.00</h2></div>
+	    </div>
+	    <div class="recharge">
+	      <div onclick='fnOpenRechargeWin()'>充值</div>
+	      <div onclick='fntixian()'>提现</div>
+	    </div>
+	</div>
+	<div class="iebtn" id='headers'>
+	   <div class="income menu"  onclick="fnSetNavMenuIndex(0)" >收入</div>
+	   <div class="expense menu" onclick="fnSetNavMenuIndex(1)">支出</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+      var header=$api.byId('wrapper');
+      var headers=$api.byId('headers');
+	 var  menus = $api.domAll(headers, '.menu');
+
+   apiready=function(){
+	  openFrames();
+}
+function openFrames(){
+    var frames = [{name:'bs_walletset0',url:'./bs_walletset0.html'},{name:'bs_walletset1',url:'./bs_walletset1.html'}];
+    api.openFrameGroup({
+        name: 'mainFrameGroup',
+        scrollEnabled: true,
+        rect: {
+            x: 0,
+            y: '255',
+            w: 'auto',
+            h: 'auto'
+        },
+        index:0,
+        frames: frames
+    }, function(ret, err) {
+        fnSetNavMenuSelected(ret.index);
+        console.log(ret.index)
+    }); 
+}
+
+function fnSetNavMenuIndex(index_) {
+    fnSetNavMenuSelected(index_);
+    api.setFrameGroupIndex({
+        name: 'mainFrameGroup',
+        index: index_,
+        scroll: true
+    });
+       console.log(index_)
+}
+
+function fnSetNavMenuSelected(index_) {
+    for (var i =0; i < menus.length; i++) {
+        if (index_ == i) {
+            $api.addCls(menus[i], 'selected');
+        } else {
+            $api.removeCls(menus[i], 'selected');
+        }
+    }
+}
+
+
+   function fnOpenRechargeWin(){
+      api.openWin({
+	      name: 'recharge',
+	      url: './recharge.html'
+      });
+   }
+   function fntixian(){
+   var money=$('#money').text();
+   if(money<20){
+	   api.alert({
+	    title: '小提示',
+	    msg: '钱包余额满20元就能提现了哦',
+	    })
+   }else{
+   api.openFrame({
+	   name: '',
+	   url: '',
+	   rect: {
+		   x:0,
+		   y:0,
+		   w:0,
+		   h:0
+	   }
+   });
+   }
+   }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

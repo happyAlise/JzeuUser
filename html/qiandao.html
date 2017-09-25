@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+       .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+       .title{display:inline-block}
+       .checkbox{margin-right:0.5rem;background:#fff !important;}
+       .aui-list-view-cell:after{border:none !important}
+       .hightlight{background:#c3eaf0}
+       .aui-btn{background:#0fc;border-radius: 2px;height:2.5rem;
+       line-height:2.5rem;font-size:0.9rem;border:none;padding:0;
+       position:fixed;bottom:0;
+       }
+       .aui-btn:active{background:#666}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style='padding-top:25px;'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">现场签到</div>
+	</header>
+    <div class='aui-content'>  
+       <ul class="aui-list-view">
+       	<li class="aui-list-view-cell" id='joblist'>
+       		<div class='title'>求职者1</div>
+       	    <div class='aui-pull-right'><input type="checkbox" class='checkbox' />签到</div>
+       	</li>
+       	<li class="aui-list-view-cell" id='joblist'>
+       		<div class='title'>求职者1</div>
+       	    <div class='aui-pull-right'><input type="checkbox" class='checkbox'/>签到</div>
+       	</li>
+       	<li class="aui-list-view-cell" id='joblist'>
+       		<div class='title'>求职者1</div>
+       	    <div class='aui-pull-right'><input type="checkbox" class='checkbox' />签到</div>
+       	</li> 
+       </ul>
+    </div>
+     <div class="aui-btn aui-btn-block aui-btn-success" onclick="submit()">确认提交</div>
+
+</body>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+  $(function(){
+   $('.aui-list-view-cell').click(function(){
+   $(this).addClass('hightlight').siblings().removeClass('hightlight');
+   $(this).find('.checkbox').prop('checked',function(index,val){return !val})
+   })
+})
+     var header=$api.dom('header');
+     var headerH=$api.offset(header).h;
+      $api.fixStatusBar(headerH);
+	apiready = function(){
+		
+	};
+	function submit(){
+	api.ajax({
+	    url:'http://106.14.69.92/Appmanager/Release/SiginInfo?wid='+369
+    },function(ret,err){
+    	console.log(JSON.stringify(ret))
+    });
+	
+	}
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

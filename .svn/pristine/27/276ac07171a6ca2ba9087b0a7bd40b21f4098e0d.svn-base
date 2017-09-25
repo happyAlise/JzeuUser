@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+		/*列表1*/
+			 .list {
+				margin: 0.3rem 0.1rem 0.5rem 0.1rem;
+				border: 1px solid #f2f2f2;
+				overflow: auto;
+				background:#fff;		
+			}
+			.top {
+				display: flex;
+				padding: 1rem 0.7rem;
+			}
+			.top img {
+                height:3rem;
+                width:3rem;
+				flex: 0 0 3rem;
+			}
+			.top .title {
+				display: inline-block;
+				vertical-align: top;
+				padding-left: 1rem;
+				padding-top: 0.3rem;
+				flex: 1;
+				font-size:0.9rem;
+			}
+			.time{
+			font-size:0.8rem;
+			margin-top:0.2rem;
+			}
+			.top .state {
+				font-size:0.9rem;
+				color: #FF6600;
+				margin-top: 1rem;
+				margin-right:0.7rem;				
+			}
+			.bottom{
+			width:100%;
+			font-size:0.9rem;
+			color: #FF6600;
+			height:2.1rem;
+			line-height:2.1rem;
+			border-top:1px solid #ededed;
+			background:#fff;
+			}
+			.edit{
+			font-size:0.7rem;
+			width:4rem;
+			text-align:center;
+			border:1px solid #f60;
+			border-radius:3px;
+			background:#fff;
+			height:1.8rem;
+			line-height:1.8rem;
+			margin-right:0.5rem;
+			position:relative;
+			top:0.2rem;
+			}
+			.borderd{border-bottom:2px solid #f60;color:#f60}
+			.outlined{background:none;color:#FFC02B;font-size:0.9rem}
+			.tip{width:100%;text-align:center;margin-top:0.5rem}
+			.tip p{margin-bottom:1rem;}
+			.imgbox{width:100%;text-align:center;margin-top:17%}
+			.imgbox img{width:150px;}
+    </style>
+</head>
+<body>
+	<div id="list1"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		requestJiezhi()
+		api.setRefreshHeaderInfo({
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#ccc',
+				textColor : '#fff',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...'
+			}, function(ret, err) {
+				//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				if (ret) {
+					window.location.reload();
+					api.refreshHeaderLoadDone();
+				}
+			});	
+	};
+   var username = $api.getStorage('username');
+	  function fnopenjobwin(id){
+			api.openWin({
+				name : 'jobdetail',
+				url : './jobdetail.html',
+				pageParam:{'wid':id}
+			})
+	  }
+	 function fnopenjobtypewin(){
+	    api.openWin({
+	        name: 'issueTypeC',
+	        url: './issueTypeC.html'
+        });	 
+	 }
+	 
+	 function requestJiezhi(){
+	 api.showProgress({
+	    msg:'加载中...'
+     });
+           $.ajax({
+             type:'GET',
+           url:'http://106.14.69.92/Appmanager/Jzmanagement/jiezhibaoming?username='+username,
+             success:function(data){
+               api.hideProgress();
+                if(data.length==0){
+                   var text="<div class='imgbox'><img src='../image/nodata.png'/></div>"+
+					   "<div  class='tip'><p>您还没有待审核的兼职</p>"+
+					   "<div><div class='aui-btn aui-btn-warning outlined' onclick='fnopenjobtypewin()'>发布工作</div></div></div>"
+					    $('#list1').html(text)
+                }else{
+                      var list="";
+				      for(var i=0;i<data.length;i++){
+				      list=list+"<div class='list' onclick='fnopenjobwin("+data[i].id+")'><div class='top'><img src='"+data[i].url+"' class='list1img'/>"
+				      +"<div class='title'><div>"+data[i].title+"</div><p class='time'>"+data[i].datebegin+
+				      "</p></div><div class='state'><span >已下架</span></div></div></div>"	      
+					  }
+					  $('#list1').html(list)
+					  }
+				},
+				error:function(data){
+				  alert(data)
+				}           
+           })      
+      }
+</script>
+</html>

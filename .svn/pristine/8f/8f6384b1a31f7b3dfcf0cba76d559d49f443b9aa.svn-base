@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+<<<<<<< .mine
+
+    	.row {display: -webkit-box;display: -webkit-flex;background:#fff;}
+		.col {-webkit-box-flex:1; -webkit-flex:1; flex:1;position: relative;}
+    	.tabbar {height: 50px;line-height: 50px;text-align: center;border-bottom: 1px solid #e0e0e0;}
+		.tabbar .col {font-size: 14px;}
+
+		.active {color: #f60;}
+		.indicator {height:3px; width: 100%; background: #f60; position: absolute; bottom: 0;}
+		.presshover {background-color: #FAFAFA !important;}
+		/*列表1*/
+			 .list {
+				margin: 0.3rem 0.1rem 0.5rem 0.1rem;
+				border: 1px solid #f2f2f2;
+				overflow: auto;
+				background:#fff;
+			}
+			.top {
+				display: flex;
+				padding: 0.7rem 0.7rem;
+			}
+			.top img {
+                height:3rem;
+                width:3rem;
+				flex: 0 0 3rem;
+			}
+			.top .title {
+				display: inline-block;
+				vertical-align: top;
+				padding-left: 1rem;
+				padding-top: 0.3rem;
+				flex: 1;
+				font-size:0.9rem;
+			}
+			.time{
+			font-size:0.8rem;
+			margin-top:0.2rem;
+			}
+			.top .state {
+				font-size:0.9rem;
+				color: #FF6600;
+				margin-top: 1rem;
+				margin-right:0.7rem;
+			}
+			.bottom{
+			width:100%;
+			font-size:0.9rem;
+			color: #FF6600;
+			height:2.2rem;
+			line-height:2.2rem;
+			border-top:1px solid #ededed;
+			border-bottom:1px solid #ededed;
+			}
+			.edit{
+			margin-right:0.5rem;
+			width:4rem;
+			text-align:center;
+			border-left:1px solid #ededed;
+			}
+
+    	.row {display: -webkit-box;display: -webkit-flex;background:#fff;}
+		.col {-webkit-box-flex:1; -webkit-flex:1; flex:1;position: relative;}
+    	.tabbar {height: 50px;line-height: 50px;text-align: center;border-bottom: 1px solid #e0e0e0;}
+		.tabbar .col {font-size: 14px;}
+
+		.active {color: #f60;}
+		.indicator {height:3px; width: 100%; background: #f60; position: absolute; bottom: 0;}
+		.presshover {background-color: #FAFAFA !important;}
+		/*列表1*/
+			 .list {
+				margin: 0.3rem 0.1rem 0.5rem 0.1rem;
+				border: 1px solid #f2f2f2;
+				overflow: auto;
+				background:#fff;
+			}
+			.top {
+				display: flex;
+				padding: 0.7rem 0.7rem;
+			}
+			.top img {
+                height:3rem;
+                width:3rem;
+				flex: 0 0 3rem;
+			}
+			.top .title {
+				display: inline-block;
+				vertical-align: top;
+				padding-left: 1rem;
+				padding-top: 0.3rem;
+				flex: 1;
+				font-size:0.9rem;
+			}
+			.time{
+			font-size:0.8rem;
+			margin-top:0.2rem;
+			}
+			.top .state {
+				font-size:0.9rem;
+				color: #FF6600;
+				margin-top: 1rem;
+				margin-right:0.7rem;
+			}
+			.bottom{
+			width:100%;
+			font-size:0.9rem;
+			color: #FF6600;
+			height:2.1rem;
+			line-height:2.1rem;
+			border:none;
+			border-top:1px solid #ededed;
+			}
+			.edit{
+			margin-right:0.5rem;
+			width:4rem;
+			text-align:center;
+			border-left:1px solid #ededed;
+			}
+    </style>
+</head>
+<body>
+   <div class="row hightitem tabbar" id='nav'>
+		<div class="col" id="col1"  tapmode="active" onclick="tabswitch(1)">
+			等待审核
+			<div class="indicator" id="indicator1"></div>
+		</div>
+		
+		<div class="col"  id="col2"  tapmode="active" onclick="tabswitch(2)">
+			正在招聘
+			<div class="indicator" id="indicator2"></div>
+		</div>
+
+		<div class="col" id="col3"  tapmode="active" onclick="tabswitch(3)">
+			截止报名
+			<div class="indicator" id="indicator3"></div>
+		</div>
+	</div>
+	<div id="list1">
+			<div class="list"  onclick='fnopenjobwin()'>
+			  <div class="top">
+				<img src="../image/d2.png"/>
+				<div class="title">
+				    <div>单行列表标题效果</div>
+					<p class="time">2017-05-15</p>
+				</div>
+				<div class='state'>
+				   <span>状态码</span>
+				</div>
+			  </div>
+				<div class="bottom">
+				   <div class='edit aui-pull-right' onclick='fnopenissuewin()'>编辑</div>
+				</div>
+		    </div>
+		    <div class="list" >
+			  <div class="top">
+				<img src="../image/d2.png" />
+				<div class="title">
+				    <div>单行列表标题效果</div>
+					<p class="time">2017-05-15</p>
+				</div>
+				<div class='state' onclick='fnopenjobwin()'>
+				   <span >状态码</span>
+				</div>
+			  </div>
+				<div class="bottom">
+				   <div class='edit aui-pull-right' onclick='fnopenissuewin()'>编辑</div>
+				</div>
+		    </div>
+	    </div>
+	<div id="list2">
+	    <div class="list" >
+			  <div class="top">
+				<img src="../image/d2.png" />
+				<div class="title">
+				    <div>单行列表标题效果</div>
+					<p class="time">2017-05-15</p>
+				</div>
+				<div class='state'>
+				   <span >状态码</span>
+				</div>
+			  </div>
+		</div>
+	  </div>
+	  <div id="list3">
+	    <div class="list" >
+			  <div class="top">
+				<img src="../image/d2.png" />
+				<div class="title">
+				    <div>单行列表标题效果</div>
+					<p class="time">2017-05-15</p>
+				</div>
+				<div class='state'>
+				   <span >状态码</span>
+				</div>
+			  </div>
+		</div>
+	  </div> 	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+     function fnopenjobwin(){
+         api.openWin({
+	      name: 'jobdetail',
+	      url: './jobdetail.html'
+      });
+     }
+     function fnopenissuewin(){
+      api.openWin({
+	      name: 'issuejob',
+	      url: './issuejob.html'
+      });
+     }
+	function tabswitch (type) {
+			var col1 = document.getElementById('col1');
+			var col2 = document.getElementById('col2');
+			var col3 = document.getElementById('col3');
+
+			var indicator1 = document.getElementById("indicator1");
+			var indicator2 = document.getElementById("indicator2");
+			var indicator3 = document.getElementById("indicator3");
+
+			var list1 = document.getElementById("list1");
+			var list2 = document.getElementById("list2");
+			var list3 = document.getElementById("list3");
+
+			if (type == 1) {
+				col1.style.color= "#f60";
+				col2.style.color= "#000";
+				col3.style.color= "#000";
+
+				indicator1.style.display = "block";
+				indicator2.style.display = "none";
+				indicator3.style.display = "none";
+				list1.style.display = "block";
+				list2.style.display = "none";
+				list3.style.display = "none";
+			}
+			else if (type == 2) {
+				col2.style.color = "#f60";
+				col1.style.color = "#000";
+				col3.style.color = "#000";
+				indicator1.style.display = "none";
+				indicator2.style.display = "block";
+				indicator3.style.display = "none";
+				list1.style.display = "none";
+				list2.style.display = "block";
+				list3.style.display = "none";
+			}else {
+				col3.style.color = "#f60";
+				col1.style.color = "#000";
+				col2.style.color = "#000";
+
+				indicator1.style.display = "none";
+				indicator2.style.display = "none";
+				indicator3.style.display = "block";
+				list1.style.display = "none";
+				list2.style.display = "none";
+				list3.style.display = "block";
+			}
+	}
+
+	window.onload = function  () {
+						tabswitch(1);
+						
+					}
+</script>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-card:after{
+      border-radius:2px !important;
+       }
+     .aui-input-row{
+     padding:3px;
+     padding-left:10px;
+     padding-right:10px;
+
+     }
+    	.password{
+    	height:2rem;
+    	line-height:2rem;
+    	font-size:0.75rem;
+    	width:5rem;
+    	text-align:center;
+    	display:inline-block;
+    	margin-top:0.3rem;
+    	color:#fff;
+        background:#ff6600;
+        border-radius: 3px;
+    	}
+    	input{
+    	display: inline;
+    	width:70% !important; 
+    	}
+    	.unlabed{
+    	background:rgba(0,0,0,0.25);
+    	}
+    	.point{
+    	width:6rem
+    	}
+    	.aui-btn-block {
+	    display: block;
+	    width: 95%;
+	    padding: 8px 0;
+	    margin:1rem auto 1.5rem;
+	    font-size: 16px;
+	    border-radius:3px;
+	   }
+	   .aui-btn-success{
+	     background-color:#f60;
+	   }
+	   .aui-btn-success:active{
+	     background:rgba(0,0,0,0.2)
+	   }
+	   .aui-form{
+	      margin-top:2rem;
+	   }
+      .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem;padding-top:20px}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin()">
+			<span class="aui-iconfont aui-icon-left" style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">修改密码</div>
+	</header>
+	  <div class="aui-card">
+			<div class="aui-form">
+				<div class="aui-input-row">
+				    <span class="aui-input-addon">密 &nbsp;&nbsp;码</span>
+					<input type="password" class="aui-input" id='pwd' placeholder="请输入您的钱包密码">
+				</div>
+				<div class="aui-input-row">
+					<span class="aui-input-addon" style='padding-right:0.35rem;'>新密码</span>
+					<input type="password" class="aui-input" id='pwd2' placeholder="新密码长度不得小于6位">
+				</div>
+				<div class="aui-input-row">
+					<span class="aui-input-addon" style='padding-right:0.35rem;'>确认密码</span>
+					<input type="password" class="aui-input" id='repwd2' placeholder="请再次输入确定密码">
+				</div>
+			</div>	
+		</div>
+		<div class="aui-btn aui-btn-block aui-btn-success" onclick='modify()'>重置</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	   
+	};
+
+	function　modify(){
+	  var mima=$api.getStorage('mima');
+	   if($('#pwd').val()!=mima){
+	     alert('密码输入错误！')
+	     return;
+	   }
+     var pwd2=$('#pwd2').val();
+      if(!(/^\d{6}$/.test(pwd2))){
+		     api.toast({
+		        msg:'密码设置有误，请按要求填写'
+	         });
+	         return;
+         }
+      var repwd2=$('#repwd2').val();
+      if(repwd2!=pwd2){
+         api.toast({
+             msg:'您两次输入密码有误，请重新输入'
+         });
+          return;
+      }
+     api.toast({
+	     msg:'修改成功！'
+     });
+      $api.rmStorage('mima');
+      $api.setStorage('mima',repwd2);
+      api.openWin({
+	      name: 'bs_mywallet',
+	      url: './bs_mywallet.html'
+      });
+	}
+	
+</script>
+</html>
+
+
+
+
+
+
+

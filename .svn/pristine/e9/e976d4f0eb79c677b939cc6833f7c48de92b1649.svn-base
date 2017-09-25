@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+
+    	header{
+    	height:25vh;
+    	width:100%;
+    	background:#00ccff;
+    	margin-bottom:0.5rem;
+    	color:#fff;
+    	}
+    	
+	.list {
+			padding:2rem 0 2rem 1rem;
+			overflow: auto;
+		}
+		.top {
+			display: flex;
+		}
+		.top img {
+	        height:4rem;
+	        width:4rem;
+			flex: 0 0 4rem;
+		}
+		.top .title {
+			display: inline-block;
+			vertical-align: top;
+			padding-left: 1rem;
+			padding-top: 0.3rem;
+			flex: 1;
+			font-size:0.9rem;
+		}
+		.time{
+		font-size:0.8rem;
+		margin-top:1rem;
+		}
+		.top .money {
+		    margin-top:0.5rem;
+			font-size:0.8rem;
+			color:#fff;
+			border:1px solid #fff;
+			border-right:none;
+			height:2rem;
+			line-height:2rem;
+			width:6.5rem;
+			text-align:center;
+		   border-bottom-left-radius: 0.7rem;
+           border-top-left-radius: 0.7rem;
+		}
+		.aui-iconfont{padding-right:0.5rem;}
+		.listgroup{ font-size:0.9rem;}
+		.aui-list-view-cell{padding:8px;}
+		.aui-list-view-cell img{width:35px;height:35px;vertical-align: middle;margin-right:0.5rem;margin-left:0.2rem}
+    </style>
+</head>
+<body>
+	<header>
+	     <div class="list">
+	        <div class="top">
+				<img src="../image/fagongzi.png" onclick="fnOpenLoginWin()"/>
+				<div class="title">
+				    <div onclick="fnOpenLoginWin()">企业名</div>
+					<div class="time"><span class='aui-iconfont aui-icon-friendfamous' style="padding:0"></span>未实名</div>
+				</div>
+				<div class='money' onclick='fnOpenwalletWin()'>
+				   <span >我的钱包</span>
+				</div>
+			  </div>
+		</div>
+	</header>
+	
+	<div class='listgroup'>
+	 <ul class="aui-list-view">
+	 	<li class="aui-list-view-cell" data-win="list_arrow" onclick="fnOpenBSwin()">
+	 		<img src="../image/center1.png"/><span class="aui-arrow-right">企业信息</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list_thumb" onclick='fnOpenTNwin()'>
+	 		<img src="../image/center2.png"/><span class="aui-arrow-right">实名认证</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image">
+	 		<img src="../image/center3.png"/><span class="aui-arrow-right">推荐分享
+	 		
+	 		</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image"  onclick="fnOpenNewWin()">
+	 		<img src="../image/center4.png"/><span class="aui-arrow-right">新闻资讯</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick='fnOpenFeedbackWin()'>
+	 		<img src="../image/center5.png"/><span class="aui-arrow-right" >意见反馈</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick='fnversion()'>
+	 		<img src="../image/center6.png"/><span>版本更新</span>
+	 	</li>
+	 </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	   function fnOpenLoginWin(){
+	     api.openWin({
+		     name: 'login',
+		     url: './login.html'
+	     });
+	  }
+	  function fnOpenwalletWin(){
+	     api.openWin({
+		     name: 'bs_wallet',
+		     url: './bs_wallet.html'
+	     });
+	  }
+	  function fnOpenBSwin(){
+	  api.openWin({
+		  name: 'bs_message',
+		  url: 'bs_message.html'
+	  });
+	  }
+	  function fnOpenTNwin(){
+	    api.openWin({
+		  name: 'bs_trueName',
+		  url: 'bs_trueName.html'
+	  });
+	  }
+	  function fnOpenNewWin(){
+	  api.openWin({
+	      name:'bs_new',
+	      url:'./bs_new.html'
+	  })
+	  }
+	  function fnOpenFeedbackWin(){
+	   api.openWin({
+		  name: 'bs_feedback',
+		  url: 'bs_feedback.html'
+	  });
+	  }
+	  function fnversion(){
+	  api.alert({
+      title: '软件更新',
+      msg: ' 当前版本 1.2 \n当前已是最新版本,无需更新',
+      }, function(ret, err) {
+      });
+	  
+	  }　
+	apiready = function(){
+		
+	};
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

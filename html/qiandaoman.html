@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem;padding-top:1.25rem;}
+     .iebtn{width:100%;display:flex;font-size:0.95rem;height:2rem;line-height:2rem;text-align:center;clear:both;}
+   .income{flex:1;margin:auto 1.5rem auto 3rem;}
+ /*  .expense{width:40%;position:relative;left:50%;top:-2rem}*/
+     .expense{flex:1;margin:auto 3rem auto 1.5rem;}
+   .selected{border-bottom:2px solid #41C7DB;color:#41C7DB;box-sizing:border-box;}
+    </style>
+</head>
+<body>
+  <div id="wrapper">
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">签到管理</div>
+	</header>
+	<div class="iebtn" id='headers'>
+	   <div class="income menu"  onclick="fnSetNavMenuIndex(0)" >已签到</div>
+	   <div class="expense menu" onclick="fnSetNavMenuIndex(1)">未签到</div>
+	</div>
+  </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+      var headers=$api.byId('headers');
+	 var  menus = $api.domAll(headers, '.menu');
+      var header=$api.byId('wrapper');
+      var headerH=$api.offset(header).h;
+   apiready=function(){
+	  openFrames();
+}    
+function openFrames(){
+    var frames = [{name:'areadyAttend',url:'./areadyAttend.html'},{name:'noAttend',url:'./noAttend.html'}];
+    api.openFrameGroup({
+        name: 'mainFrameGroup',
+        scrollEnabled: true,
+        rect: {
+            x: 0,
+            y: '115',
+            w: 'auto',
+            h: 'auto'
+        },
+        index:0,
+        frames: frames
+    }, function(ret, err) {
+        fnSetNavMenuSelected(ret.index);
+        console.log(ret.index)
+    }); 
+}
+
+function fnSetNavMenuIndex(index_) {
+    fnSetNavMenuSelected(index_);
+    api.setFrameGroupIndex({
+        name: 'mainFrameGroup',
+        index: index_,
+        scroll: true
+    });
+       console.log(index_)
+}
+
+function fnSetNavMenuSelected(index_) {
+    for (var i =0; i < menus.length; i++) {
+        if (index_ == i) {
+            $api.addCls(menus[i], 'selected');
+        } else {
+            $api.removeCls(menus[i], 'selected');
+        }
+    }
+}
+
+</script>
+</html>

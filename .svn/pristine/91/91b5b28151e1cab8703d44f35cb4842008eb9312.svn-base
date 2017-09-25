@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+      	/*头部样式*/
+    	.aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+    	.outlined{background:none;color:#ff6600;font-size:0.9rem}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">企业信息</div>
+		<a class="aui-pull-right">
+			<div class="aui-btn aui-btn-warning  aui-btn-block outlined" onclick="fnOpenloginWin()">注销</div>
+		</a>
+	</header>	 
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	var header=$api.dom('header');
+    $api.fixStatusBar(header);
+    var headerH=$api.offset(header).h;
+		api.openFrame({
+	        name: 'bs_message_frame',
+	        url: './bs_message_frame.html',
+	        rect: {
+		        x:0,
+		        y:headerH,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	};
+   function fnOpenloginWin(){
+      api.openWin({
+	      name: 'login',
+	      url: './login.html'
+      });
+   }
+</script>
+</html>

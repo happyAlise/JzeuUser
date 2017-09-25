@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-input-row{padding:0; }
+    .aui-input-addon{padding-left:0.8rem !important;}
+    .aui-input-addon,input{font-size:0.8rem !important;}
+    .zhaopian{margin:0 auto;width:100%;padding:0.5rem;padding-left:1rem;padding-bottom:0.3rem;border:1px solid #ededed;border-top:none}
+    .safety{display:inline-block;font-size:0.6rem;margin:0.5rem auto 0.5rem 1rem}
+    .aui-btn-block{background:#ff6600;height:2.5rem;padding:0;line-height:2.5rem;width:90%;margin:0 auto;color:#fff;font-size:0.9rem}
+    </style>
+</head>
+<body>
+	<div class="aui-form" style="margin-top:0.4rem;">
+		<div class="aui-input-row">
+			<span class="aui-input-addon">企业名称</span>
+			<input type="text" class="aui-input">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">法人名称</span>
+			<input type="text" class="aui-input">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">注册年份</span>
+			<input type="date" class="aui-input">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">注册号码</span>
+			<input type="text" class="aui-input">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">身份证号</span>
+			<input type="text" class="aui-input">
+		</div>
+		<div class="aui-input-row zhaopian">
+			<img src="../image/zhaopian.png"/>
+		</div>
+		<span class='safety'>* 注：我们会对您的资料进行隐私保护，绝不对外公开</span>
+	</div> 
+	<div class="aui-btn aui-btn-block" onclick="return false;">提交</div>
+	
+		
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+</script>
+</html>

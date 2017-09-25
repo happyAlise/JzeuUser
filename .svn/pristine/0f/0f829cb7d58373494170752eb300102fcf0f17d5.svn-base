@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">新闻资讯</div>
+	</header>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var header=$api.dom('header');
+		$api.fixStatusBar(header);
+		var headerH=$api.offset(header).h;
+		api.openFrame({
+	        name: 'bs_new_frame',
+	        url: './bs_new_frame.html',
+	        rect: {
+		        x:0,
+		        y:headerH,
+		        w:'auto',
+		        h:'auto'
+	        },
+	        showProgress:true,
+	        bounces:true
+        });
+	};
+	
+	
+</script>
+</html>

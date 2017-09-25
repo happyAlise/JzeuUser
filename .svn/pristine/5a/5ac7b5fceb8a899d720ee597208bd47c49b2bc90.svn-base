@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	.tabbar {height:3rem;line-height:3rem;
+    	text-align: center;border-bottom:1px solid #e0e0e0;
+    	position:fixed;top:0;z-index:100;display:flex;background:#fff;width:100%}
+        .col {-webkit-box-flex:1; -webkit-flex:1; flex:1;position: relative;font-size: 14px;}
+		.active {color:#f60;}
+		.presshover {background-color: #FAFAFA !important;}
+		.listbox{padding-top:3rem;}
+		/*列表1*/
+			 .list {
+				margin: 0.3rem 0.1rem 0.5rem 0.1rem;
+				border: 1px solid #f2f2f2;
+				overflow: auto;
+				background:#fff;		
+			}
+			.top {
+				display: flex;
+				padding: 1rem 0.7rem;
+			}
+			.top img {
+                height:3rem;
+                width:3rem;
+				flex: 0 0 3rem;
+			}
+			.top .title {
+				display: inline-block;
+				vertical-align: top;
+				padding-left: 1rem;
+				padding-top: 0.3rem;
+				flex: 1;
+				font-size:0.9rem;
+			}
+			.time{
+			font-size:0.8rem;
+			margin-top:0.2rem;
+			}
+			.top .state {
+				font-size:0.9rem;
+				color: #FF6600;
+				margin-top: 1rem;
+				margin-right:0.7rem;				
+			}
+			.bottom{
+			width:100%;
+			font-size:0.9rem;
+			color: #FF6600;
+			height:2.1rem;
+			line-height:2.1rem;
+			border-top:1px solid #ededed;
+			background:#fff;
+			}
+			.edit{
+			font-size:0.7rem;
+			width:4rem;
+			text-align:center;
+			border:1px solid #f60;
+			border-radius:3px;
+			background:#fff;
+			height:1.8rem;
+			line-height:1.8rem;
+			margin-right:0.5rem;
+			position:relative;
+			top:0.2rem;
+			}
+			.borderd{border-bottom:2px solid #f60;color:#f60}
+			.outlined{background:none;color:#FFC02B;font-size:0.9rem}
+			.tip{width:100%;text-align:center;margin-top:60%;}
+			.tip p{margin-bottom:1rem;}
+    </style>
+</head>
+<body>
+   <div class="tabbar" id='nav'>
+		<div class="col" id="col1"  tapmode="active" onclick="tabswitch(1)" >
+			等待审核
+		</div>		
+		<div class="col"  id="col2"  tapmode="active" onclick="tabswitch(2)">
+			正在招聘
+		</div>
+		<div class="col" id="col3"  tapmode="active" onclick="tabswitch(3)">
+			截止报名
+		</div>
+	</div>
+	
+<div class='listbox'>
+	<div id="list1"></div>
+	<div id="list2"></div>
+	<div id="list3"></div> 	
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+        apiready=function(){
+          tabswitch(1); 
+        }
+	function tabswitch(type){
+			if (type == 1){
+			   $('#col1').addClass('borderd').siblings().removeClass('borderd');               
+               $('#list1').css('display','block').siblings().css('display','none');
+               requestExamine();		
+			}
+			else if (type == 2) {
+				 $('#col2').addClass('borderd').siblings().removeClass('borderd');
+				 $('#list2').css('display','block').siblings().css('display','none');
+				 requestZhaoping()
+			}else {
+				$('#col3').addClass('borderd').siblings().removeClass('borderd');
+                $('#list3').css('display','block').siblings().css('display','none');
+                requestJiezhi()
+			}
+	}
+	    var username = $api.getStorage('username');
+	  function fnopenjobwin(id){
+			api.openWin({
+				name : 'jobdetail',
+				url : './jobdetail.html',
+				pageParam:{'wid':id}
+			})
+	  }
+	  function fnquxiao(id){
+	      api.ajax({
+	          url:'http://106.14.69.92/Appmanager/Jzmanagement/quxiaofab?wid='+id
+          },function(ret,err){
+          	  if(ret){
+          	    api.toast({
+	                  msg:'取消发布成功'
+                  }); 
+               window.location.reload();         	  
+          	  }
+          }); 
+	  }
+	 function fnopenjobtypewin(){
+	    api.openWin({
+	        name: 'issueTypeC',
+	        url: './issueTypeC.html'
+        });	 
+	 }
+	/*等待审核*/
+     function requestExamine(){    
+           $.ajax({
+				url :'http://106.14.69.92/Appmanager/Jzmanagement/examine?username='+username,				
+				success:function(msg){
+					console.log(JSON.stringify(msg));
+				    api.hideProgress();
+				    console.log(msg.length)
+					if(msg.length==0){
+					   var text="<div  class='tip'><p>您还没有待审核的兼职</p>"+"<div><div class='aui-btn aui-btn-warning  outlined' onclick='fnopenjobtypewin()'>发布工作</div></div></div>"
+					    $('#list1').html(text)
+					}else{			
+					  var list="";
+					   for(var i=0;i<msg.length;i++){
+					     list=list+"<div class='list'><div class='top' onclick='fnopenjobwin("+msg[i].id+")'><img src='"+msg[i].url+"' class='list1img'/>"
+					      +"<div class='title'><div>"+msg[i].title+"</div><p class='time'>"+msg[i].datebegin+
+					      "</p></div><div class='state'><span >未审核</span></div></div>"+
+					      "<div class='bottom'>"+
+						  "<div class='edit aui-pull-right' onclick='fnquxiao("+msg[i].id+")'>取消发布</div></div></div>"	      
+					   }
+					    $('#list1').html(list)
+					   }
+				},
+				error:function(data){
+				   alert(data)
+				}
+			});
+        }
+ /*正在招聘*/
+      function requestZhaoping(){
+           $.ajax({
+             type:'GET',
+           url:'http://106.14.69.92/Appmanager/Jzmanagement/zhengzaizhaop?username='+username,
+             success:function(data){
+              if(data.length==0){
+ 			   var text="<div  class='tip'><p>您当前没有正在招的兼职</p>"+"<div><div class='aui-btn aui-btn-warning  aui-btn-block outlined' onclick='fnopenjobtypewin()'>发布工作</div></div></div>"
+                  $('#list2').html(text)
+              }else{               
+                   var list="";
+				   for(var i=0;i<data.length;i++){
+				     list=list+"<div class='list' onclick='fnopenjobwin("+data[i].id+")'><div class='top'><img src='"+data[i].url+"' class='list1img'/>"
+				      +"<div class='title'><div>"+data[i].title+"</div><p class='time'>"+data[i].datebegin+
+				      "</p></div><div class='state'><span >已审核</span></div></div></div>"	      
+				      }
+				      $('#list2').html(list)
+				  }
+				},
+				error:function(data){
+				  alert(data)
+				}           
+           })      
+      }
+ /*截止报名*/
+       function requestJiezhi(){
+           $.ajax({
+             type:'GET',
+           url:'http://106.14.69.92/Appmanager/Jzmanagement/jiezhibaoming?username='+username,
+             success:function(data){
+                if(data.length==0){
+                  var text="<div  class='tip'><p>您当前没有截止报名的兼职</p>"+"<div><div class='aui-btn aui-btn-warning  aui-btn-block outlined' onclick='fnopenjobtypewin()'>发布工作</div></div></div>"
+                  $('#list2').html(text)
+                }else{
+                      var list="";
+				      for(var i=0;i<data.length;i++){
+				      list=list+"<div class='list' onclick='fnopenjobwin("+data[i].id+")'><div class='top'><img src='"+data[i].url+"' class='list1img'/>"
+				      +"<div class='title'><div>"+data[i].title+"</div><p class='time'>"+data[i].datebegin+
+				      "</p></div><div class='state'><span >已下架</span></div></div></div>"	      
+					  }
+					  $('#list3').html(list)
+					  }
+				},
+				error:function(data){
+				  alert(data)
+				}           
+           })      
+      }
+
+
+
+
+
+
+
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

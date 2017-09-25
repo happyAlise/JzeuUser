@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/smohan.pop&share.css"/>
+    <style>
+     	body{
+    	background:#fcfcfc;
+    	}
+    	header{
+    	display:flex;
+    	justify-content:center;
+    	align-items:center;
+    	height:30%;
+    	display:flex;
+    	flex-direction:column;
+    	justify-content:center;
+    	align-items:center;
+    	width:100%;
+    	background:#00ccff;
+    	}
+    	.header-img{
+         text-align:center;
+    	 margin:0 auto;
+    	background:#fff;
+    	width:80px;
+    	height:80px;
+    	border-radius:50%;
+    	}
+    	.header-img img{
+    	  position:relative;
+    	  top:10px;
+    	  margin-bottom:7px;
+    	  width:40px;
+    	  height:35px;
+    	}
+        .header-img p{
+         color:#00ccff;
+         font-size:0.9rem;
+        }
+        .tips{color:#fff;font-size:0.8rem;position:relative;top:1.3rem}
+        .aui-col-xs-4 p{
+        font-size:0.7rem;
+        }
+    	.aui-col-xs-4 span img{
+    	height:46px;
+    	width:46px;
+    	border:1px soild green;
+    	}
+    	.aui-grid-nine:after{
+    	border:none; 
+    	}
+    	.left:after{
+    	border-left:none !important;
+    	}
+    	.bottom:after{
+    	border-bottom: none !important;
+    	}
+    	.list2{text-align:center;}
+    	.list2 .titlelist{
+	    	width:13rem;height:1.5rem;line-height:1.5rem;margin:0 auto;
+	    	background:#fff;border-radius:4px;color:#0cf;
+    	}
+    	.coremsg{position:relative;top:1.4rem;color:#fff;display:none}
+    	.coremsg p{color:rgba(255,255,255,0.7);font-size:0.8rem;margin-top:0.3rem}
+    	.zhezhao{width:100%;height:63%;background:red;position:absolute;top:30%;z-index:100}
+    	.Smohan_Layer_box{min-width:250px !important;}
+    </style>
+</head>
+<body>
+	<header></header>
+	<div>	
+	  <ul class="aui-grid-nine">
+	  	<li class="aui-col-xs-4 aui-text-center left" onclick="openWin('issueTypeC','./issueTypeC.html')">
+	  		<span  class="aui-iconfont"><img src="../image/jianzhi.png" /></span>
+	  		<p>发布兼职</p>
+	  	</li>
+	  	<li class="aui-col-xs-4 aui-text-center" onclick="openWin('deadline3','./deadline3.html')">
+	  		<span class="aui-iconfont"><img src="../image/manage.png" /></span>
+	  		<p>报名管理</p>
+	  	</li>
+	  	<li class="aui-col-xs-4 aui-text-center" onclick="fnopenWin('xcqiandao','./xcqiandao.html')">
+	  		<span class="aui-iconfont"><img src="../image/qiandao.png" /></span>
+	  		<p>现场签到</p>
+	  	</li>
+	  	<li class="aui-col-xs-4 aui-text-center left"  onclick="fnopenWin('hire','./hire.html')">
+	  		<span class="aui-iconfont"><img src="../image/luyong.png" /></span>
+	  		<p>现场录用</p>
+	  	</li>
+	  	<li class="aui-col-xs-4 aui-text-center"  onclick="fnopenWin('qiandaoman','./qiandaoman.html')">
+	  		<span class="aui-iconfont"><img src="../image/qiandaoguanli.png" /></span>
+	  		<p>签到管理</p>
+	  	</li>
+	  	<li class="aui-col-xs-4 aui-text-center" id='give'>
+	  		<span class="aui-iconfont"><img src="../image/fenxiang.png"/></span>
+	  		<p>分享兼职</p>
+	  	</li>
+	  	<li class="aui-col-xs-4 aui-text-center left  bottom" onclick="fnopenWin('jobdetail2','./jobdetail2.html')">
+	  		<span class="aui-iconfont"><img src="../image/chakan.png" /></span>
+	  		<p>兼职详情</p>
+	  	</li>
+	  	<li class="aui-col-xs-4 aui-text-center bottom" onclick="fnopenWin('deadline3','./deadline3.html')">
+	  		<span class="aui-iconfont"><img src="../image/fagongzi.png"/></span>
+	  		<p>工资发放</p>
+	  	</li>
+	  	<li class="aui-col-xs-4 aui-text-center bottom" onclick="fndeadsignup()">
+	  		<span class="aui-iconfont"><img src="../image/jiezhi.png" /></span>
+	  		<p>截止报名</p>
+	  	</li>
+	  </ul>	
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/share.js"></script>
+<script type="text/javascript">
+
+    var wx;
+	apiready = function(){
+		isLogin();
+        isname();
+        wx = api.require('wx');
+	};
+	
+	
+	var sta;
+	function update(title,id,status){
+//	 这里写你改变那个值得方法
+     $(".titlelist span").text(title);
+     $api.setStorage('wwid',id);
+     sta=status;
+     console.log(sta)
+     if(status==0){
+       $('.coremsg').fadeIn();
+       return;
+     }else if(status==1||2){
+      $('.coremsg').hide()
+     }
+     $('#give').addClass('share');
+
+     console.log(id) 
+	}
+   
+	
+	var listlength=$api.getStorage('listlength');
+	console.log(listlength)
+	function openWin(name,url){
+		 api.openWin({
+		      name:name,
+		      url:url
+		 })
+	} 
+	
+	function fnopenWin(name,url){	
+	if($(".titlelist span").text()=='请切换兼职'){
+	   return false;
+	}else{
+	 api.openWin({
+	      name:name,
+	      url:url
+	 })
+	 }
+	} 
+
+	function isname(){
+	   var text;
+	  if(listlength==0){	 
+	       text="<div class='list1'>"+
+	                 "<div class='header-img' onclick='openWinissue()'>"+
+			             "<img src='../image/fabujianzhi.png'/>"+
+			             "<p>去发布</p>"+
+	                 "</div>"+
+	                 "<p class='tips'>暂无兼职，快去发布吧</p>"+
+	              "</div>"	
+	       $('header').html(text);	       
+	    }else{
+	      text="<div class='list2'>"+
+				     "<div class='titlelist' onclick='fnopenexamine()'><span>请切换兼职</span>&nbsp;<i class='aui-iconfont aui-icon-order'></i></div>"+
+				      "<div class='coremsg'>"+
+					       "<h1>兼职正在审核中...</h1>"+
+					       "<p>上班时间3小时内完成审核, 上班时间： 09:00至21:00</p>"+
+				     "</div>"+
+				 "</div>"	
+	       $('header').html(text);            	   
+	   }
+	}
+	function fnopenexamine(){
+	 	 api.openWin({
+	      name:'examine',
+	      url:'./examine.html',
+	 })	
+	}
+
+
+	function isLogin(){
+	   var userInfo = $api.getStorage('userInfo');
+    if (userInfo==null) {
+         api.openWin({
+            name: 'login',
+            url: './login.html'
+	 })
+	}
+  }
+  $(function(){
+	    $(".share01").click(function(){
+	        wx.shareText({	
+	            apikey:'',	  
+			    scene: 'timeline',
+			    text: '兼职e族，最好的兼职招聘平台'
+			 }, function(ret, err) {
+			    if (ret.status) {
+			        api.toast({
+	                    msg:'分享成功'
+	                });
+			    } else {
+			           alert("分享失败");
+			    }
+			})
+         })
+     })
+function fndeadsignup(){
+     var wid=$api.getStorage('wwid');
+     console.log(wid)
+	if($(".titlelist span").text()=='请切换兼职'){
+	  return false;
+	  }else if(sta==2){
+		  api.toast({
+		      msg:'此兼职已截止'
+	      });	  
+	  }else{	  
+        api.confirm({
+        title:$(".titlelist span").text(),
+        msg:"截止报名？",
+        buttons:['确认','取消 ']
+       },function(ret){
+        if(ret.buttonIndex==1){
+	   	   api.ajax({
+	              url:'http://106.14.69.92/Appmanager/Jzmanagement/quxiaofab?wid='+wid
+              },function(ret,err){
+              	api.toast({
+	                  msg:'截止报名成功'
+                  });
+              });			
+        }else{       
+        return false;       
+        }
+    });
+  }
+}
+
+  function refresh(){         
+        api.setRefreshHeaderInfo({
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#ccc',
+				textColor : '#fff',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...'
+			}, function(ret, err) {
+				//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				if (ret) {
+					setTimeout(update(),3000)
+					api.refreshHeaderLoadDone();
+				}
+		});	       
+  }
+  
+
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

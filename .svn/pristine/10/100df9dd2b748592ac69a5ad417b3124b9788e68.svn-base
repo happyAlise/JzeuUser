@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	textarea{background:#fff;width:100%;margin:0.5rem auto 1rem auto; display:block;border-top:1px solid #ededed;border-bottom:1px solid #999
+    	;font-size:0.9rem;padding:5px;
+    	}
+        .aui-btn-block{background:#ff6600;height:2.5rem;padding:0;line-height:2.5rem;width:90%;margin:0 auto;color:#fff;font-size:0.9rem}
+    </style>
+</head>
+<body>
+	<textarea rows="13" class="container"  onfocus="if(value=='请输入你的反馈意见 ( 字数100字以内 )'){value=''}"
+    onblur="if (value ==''){value='请输入你的反馈意见 ( 字数100字以内 )'}">请输入你的反馈意见 ( 字数100字以内 )</textarea>
+	<div class="aui-btn aui-btn-block" onclick="return false;">提交</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+</script>
+</html>

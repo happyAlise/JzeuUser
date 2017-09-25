@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem;padding-top:1.25rem}
+    .aui-list-view-cell{padding:0.5rem;font-size:0.9rem;}
+    .aui-list-view:after{border-top:none;}
+    .aui-list-view-cell:last-child:after{border-bottom:none}
+    .avater{height:2.5rem;border-radius:50%}
+    .imgdesc{display:inline-block;margin-top:0.6rem}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">求职者信息</div>
+	</header>
+	   
+    <ul class="aui-list-view">
+	   <li class="aui-list-view-cell">
+	   		<span class='imgdesc'>头像</span>
+	   		<img class='aui-pull-right avater' src="../image/awatar.png"/>
+	   	</li>
+	   	<li class="aui-list-view-cell">
+	   		<span>姓名</span>
+	   		<span class='aui-pull-right name' ></span>
+	   	</li>
+	   	<li class="aui-list-view-cell">
+	   		<span>电话</span>
+	   		<span class='aui-pull-right phone'></span>
+	   	</li>	   
+	   	<li class="aui-list-view-cell">
+	   		<span>现居住地</span>
+	   		<span class='aui-pull-right home'></span>
+	   	</li>
+	   	<li class="aui-list-view-cell">
+	   		<span>身份证号</span>
+	   		<span class='aui-pull-right num'></span>
+	   	</li>
+	   	<li class="aui-list-view-cell">
+	   		<span>QQ</span>
+	   		<span class='aui-pull-right qq'></span>
+	   	</li>
+	   </ul>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var header=$api.dom('header');
+		$api.fixStatusBar(header);
+		$('.name').text(api.pageParam.name);
+		$('.phone').text(api.pageParam.phone);
+		if(api.pageParam.img){
+		  $('.avater').attr('src',api.pageParam.img);
+		}	
+		$('.home').text(api.pageParam.home);
+		$('.num').text(api.pageParam.number);
+		$('.qq').text(api.pageParam.qq);
+		
+	};
+
+	
+	
+	
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

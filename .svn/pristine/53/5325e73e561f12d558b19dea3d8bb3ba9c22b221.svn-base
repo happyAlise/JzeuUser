@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+      	/*头部样式*/
+    	 .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem;border-bottom:1px solid #ededed;}
+    	.outlined{background:none;color:#ff6600;font-size:0.9rem}
+    	.item{overflow:auto;padding:0.8rem 0.5rem;font-size:0.9rem}
+       .top{clear:both;height:2rem;line-height:2rem;border-bottom:1px solid rgba(0,0,0,0.1);padding:0 1.1rem}
+       .money{color:#FF6600}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style="padding-top:20px">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">支出详情</div>
+	</header>	 
+	
+	 <div class="item">
+	     <div class="top">
+	        <span class='aui-pull-left'>流水号:</span>
+	        <span class='aui-pull-right odrernum'></span>
+	     </div>
+	     <div class="top">
+	        <span class='aui-pull-left'>类型:</span>
+	        <span class='aui-pull-right'>转账</span>
+	     </div>
+	    <div class="top">
+	        <span class='aui-pull-left'>支出:</span>
+	        <span class='aui-pull-right money'></span>
+	     </div>
+	     <div class="top">
+	        <span class='aui-pull-left'>支付方式:</span>
+	        <span class='aui-pull-right'>支付宝</span>
+	     </div>
+	      <div class="top">
+	        <span class='aui-pull-left'>时间:</span>
+	        <span class='aui-pull-right time'></span>
+	     </div>
+	     <div class="top">
+	        <span class='aui-pull-left'>余额:</span>
+	        <span class='aui-pull-right balance'></span>
+	     </div>
+	     <div class="top">
+	        <span class='aui-pull-left' >备注:</span>
+	        <span class='aui-pull-right subject'></span>
+	     </div>
+	  </div>
+	
+	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	var header=$api.dom('header');
+    $api.fixStatusBar(header);
+    console.log(api.pageParam.odrernum)
+    $('.odrernum').text(api.pageParam.odrernum)
+    $('.money').text(api.pageParam.money)
+    $('.time').text(api.pageParam.time)
+    $('.balance').text(api.pageParam.balance)
+    $('.subject').text(api.pageParam.subject)
+  };
+	
+	
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+       .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+       .title{display:inline-block}
+         .aui-list-view-cell{padding:0;border:none !important}
+         .aui-list-view-cell:after{border-bottom:none !important;}
+       .hightlight{background:#c3eaf0}
+       .checkbox{margin-right:0.5rem;background:#fff !important;}
+       .name,label{display:inline-block;height:3rem;line-height:3rem;padding:0 18px}
+       .name{width:100%}
+       .aui-btn{background:#FF6600;border-radius: 2px;height:2.5rem;
+       line-height:2.5rem;font-size:0.9rem;border:none;padding:0;
+       position:fixed;bottom:0;
+       }
+       .aui-btn:active{background:#666}
+       i{display:none}
+    </style>
+</head>
+<body>
+
+      <ul class="aui-content aui-list-view" id="evaluation">	
+		   <script id="evaluationtmpl" type="text/x-dot-template">
+			  {{ for(var i in it) { }}
+			       	 <li class="aui-list-view-cell" onclick="fnaddbackground('{{=i}}')">
+			       		<div onclick="openwin('{{=it[i].name}}','{{=it[i].phone}}','{{=it[i].cityname}}','{{=it[i].home}}','{{=it[i].number}}','{{=it[i].qq}}')"
+			       		 class='name'>{{=it[i].name}}</div>			
+			       		<i>{{=it[i].id}}</i>		       		
+			         </li>
+			  {{ } }}
+	       </script>
+	</ul>
+
+   
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">     
+	apiready = function(){
+	request()
+	     api.setRefreshHeaderInfo({
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#ccc',
+				textColor : '#fff',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...'
+			}, function(ret, err) {
+				//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				if (ret) {
+					window.location.reload();
+					api.refreshHeaderLoadDone();
+				}
+			});			
+    	};
+    	
+    	
+   var wid=$api.getStorage('wwid');
+	console.log(wid)
+	function request(){
+	api.showProgress({
+			msg:"加载中。。。"
+            });
+	    api.ajax({
+	     url:'http://106.14.69.92/Appmanager/Release/NotSignManager?wid='+354
+     },function(ret,err){
+     	if(ret){
+     	 console.log(JSON.stringify(ret))
+     	 length=ret.length;
+     	var data=ret;
+        var evalText = doT.template($("#evaluationtmpl").text())
+		$("#evaluation").html(evalText(data))	
+	    api.hideProgress();	     	 
+     	}
+     })	
+	}
+	
+   function fnaddbackground(i){
+		$('.aui-list-view-cell').eq(i).addClass('hightlight').siblings().removeClass('hightlight');	
+	} 	
+	
+  function openwin(name,phone,area,home,number,qq){                 
+      api.openWin({
+		    name: 'positionmsg',
+		    url: './positionmsg.html',
+		    pageParam:{
+		        'name':name,
+		        'phone':phone,
+		        'area':area,
+		        'home':home,
+		        'number':number,
+		        'qq':qq		        
+		        }
+	    })   
+   }  	
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css">
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css">
+    <style>
+        nav{
+    	width:100%;
+    	margin-bottom:0.5rem;
+    	padding-top:1rem;
+    	padding-bottom:1rem;
+    	background:#fff;
+    	}
+    	.nav-img{
+    	margin:0 auto;
+        text-align:center;
+    	background:#fff;
+    	width:5rem;
+    	height:5rem;
+    	border-radius:50%;
+    	border:1px solid #ff6600;
+    	}
+    	.nav-img img{
+    	  margin-bottom:7px;
+    	  width:40px;
+    	  height:35px;
+    	}
+    	.aui-input-row .aui-input-addon{
+    	border-right:1px solid #d7d7d7;
+    	padding: 10px !important;
+    	color:#666;
+    	}
+    	.aui-input-row{
+    	padding:0;
+    	}
+    </style>
+</head>
+<body>
+	   <nav>
+		    <div class="nav-img">
+		       <img src="../image/fabujianzhi.png">    
+		    </div>
+	  </nav>
+	 
+	<div class="aui-form aui-content-padded">
+		<div class="aui-input-row">
+			<span class="aui-input-addon">用户编号</span>
+			<input type="text" class="aui-input">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">手机号码</span>
+			<input type="text" class="aui-input">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">注册时间</span>
+			<input type="date" class="aui-input">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">企业邮箱</span>
+			<input type="text" class="aui-input">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">所在城市</span>
+			<input type="text" class="aui-input">
+		</div>
+	</div> 
+	  
+	  
+	 
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+</script>
+</body></html>

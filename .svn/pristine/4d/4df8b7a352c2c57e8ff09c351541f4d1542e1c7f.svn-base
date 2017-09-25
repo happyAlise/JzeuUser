@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+    .aui-btn-default{background-color:#fff;border:1px solid #000;color:#000;font-size:0.8rem;width:22%;
+    margin-right:0.35rem;height:2.2rem;margin-bottom:0.5rem;text-align:center;line-height:1.4rem}
+      .aui-btn-default:active{color:#000}
+      .aui-aui-content{padding-left:0.45rem;}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style='padding-top:20px'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">请选择兼职类型</div>
+	</header>
+	<div class="aui-aui-content aui-content-padded" id='evaluation'>	
+		   <script id="evaluationtmpl" type="text/x-dot-template">
+			  {{ for(var i in it) { }}
+			      <div class="aui-btn aui-btn-default" onclick="openWin('{{=it[i].workname}}')"><span>{{=it[i].workname}}</span></div>
+			  {{ } }}
+	       </script>
+	</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var header=$api.dom('header');
+		$api.fixStatusBar(header);
+	     api.ajax({
+	         url:'http://106.14.69.92/Appmanager/qiuzhi/jzrenwu'
+         },function(ret,err){
+         	console.log(JSON.stringify(ret))
+         	var data=ret;
+            var evalText = doT.template($("#evaluationtmpl").text());
+			$("#evaluation").html(evalText(data));
+         });
+	}
+	function openWin(workname){
+	api.openWin({
+	    name: 'issuejob',
+	    url: 'issuejob.html',
+	    pageParam:{'workname':workname}
+    });
+	}
+</script>
+</html>
+
+
+
+
+
+
+
+
+

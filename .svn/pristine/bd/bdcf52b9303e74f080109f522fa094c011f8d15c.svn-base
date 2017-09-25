@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-input-row{padding:0; }
+    .aui-input-addon{padding-left:0.8rem !important;}
+    .aui-input-addon,input{font-size:0.8rem !important;}
+    .wrapper{padding:0.7rem;width:100%;border:1px solid #EDEDED;text-align:center}
+    .top,.bottom{display:flex;flex-direction:row;}
+    .top{margin-bottom:1rem}
+    .imgbox{flex:1;text-align:center;}
+    span{color:#FF6600}
+    p{font-size:0.8rem}
+    .img{width:5rem;height:5rem;border:1px solid #EDEDED;margin:0 auto;margin-bottom:0.2rem}
+    img{width:100%;height:100%}
+    .safety{display:inline-block;font-size:0.6rem;margin:0.5rem auto 0.5rem 1rem}
+    .aui-btn-block{background:#ff6600;height:2.5rem;padding:0;line-height:2.5rem;width:90%;margin:0 auto;color:#fff;font-size:0.9rem}
+    </style>
+</head>
+<body>
+	<div class="aui-form" style="margin-top:0.4rem;">
+		<div class="aui-input-row">
+			<span class="aui-input-addon">申请人姓名</span>
+			<input type="text" class="aui-input" class='name'>
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">身份证号码</span>
+			<input type="text" class="aui-input" class='idCode'>
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">统一社会信用代码</span>
+			<input type="text" class="aui-input" class='trueCode'>
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">企业名称</span>
+			<input type="text" class="aui-input" class='bsName'>
+		</div>
+		<div class="aui-input-row wrapper">
+            <div class="top">
+               <div class="imgbox">
+	              <label for="file">
+	                <div class='img'>
+	                  <img src="../image/bg.png" alt="头像" id='myimg0'  onclick="setImg('file0')"/> <!--显示头像-->
+	                </div>
+	              </label>
+	              <input  style='display:none' type="file"  id='file0' /> <!--上传图像的表单-->
+	              <p>上传本人身份证正面照</p>
+               </div>  
+                <div class="imgbox">
+	              <label for="file">
+	                <div class='img'>
+	                  <img src="../image/bg.png" alt="头像" id='myimg1'/> <!--显示头像-->
+	                </div>
+	              </label>
+	              <input  style='display:none' type="file"  id='file1'  onchange="setImg('file1')"/> <!--上传图像的表单-->
+	              <p>上传本人身份证正面照</p>
+               </div>         
+            </div>
+             <div class="bottom">
+               <div class="imgbox">
+	              <label for="file">
+	                <div class='img'>
+	                  <img src="../image/bg.png" alt="头像" id='myimg2'/> <!--显示头像-->
+	                </div>
+	              </label>
+	              <input  style='display:none' type="file" id='file2'  onchange="setImg('file2')"/> <!--上传图像的表单-->
+	              <p>上传本人身份证正面照</p>
+               </div>  
+                <div class="imgbox">
+	              <label for="file">
+	                <div class='img'>
+	                  <img src="../image/bg.png" alt="头像" id='myimg3'/> <!--显示头像-->
+	                </div>
+	              </label>
+	              <input  style='display:none' type="file" id='file3'  onchange="setImg('file3')"/> <!--上传图像的表单-->
+	              <p>上传本人身份证正面照</p>
+               </div> 
+             </div>
+		</div>
+		<span class='safety'>* 注：我们会对您的资料进行隐私保护，绝不对外公开</span>
+	</div> 
+	<div class="aui-btn aui-btn-block" onclick="submit()">提交</div>		
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/ajaxfileupload.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	}; 
+		
+
+	
+	function setImg(fileId){
+          var name=$(".name").val();
+	 var idCode=$('.idCode').val();
+	 var trueCode=$('.trueCode').val();
+	 var bsName=$('.bsName').val();
+	 var userInfo = $api.getStorage('userInfo');
+	  var username=$api.getStorage('username');
+//	  var file=$("input[name='file']")[0].files[0];
+		 $.ajaxFileUpload({
+			 url: '', //用于文件上传的服务器端请求地址
+			 data:{
+				   username:username,
+				   name:name,
+				   number:idCode,
+				   code:trueCode,
+				   EnterpriseName:bsName,
+//				   file:file
+			 },
+			 secureuri: false, //是否需要安全协议，一般设置为false
+			 fileElementId:fileId, //文件上传域的ID
+			 dataType: 'json', //返回值类型 一般设置为json
+			 success: function (data, status){ //服务器成功响应处理函数
+				console.log(JSON.stringify(data));
+			    $("#myimg0").attr('src',data.info);
+			    $api.setStorage('imgsrc',data.info);	
+			    console.log(data.info)
+		  },
+		 error: function (data, status, e){//服务器响应失败处理函数
+		   alert(e);
+		 }
+		 })
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

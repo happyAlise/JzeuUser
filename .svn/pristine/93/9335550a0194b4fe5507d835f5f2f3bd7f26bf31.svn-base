@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/smohan.pop&share.css"/>
+    <style>
+      html,body{
+      background:#F1F8FF;
+      }
+    	header{
+    	height:25vh;
+    	width:100%;
+    	background:#00ccff;
+    	color:#fff;
+    	}
+    	
+	   .list{
+			padding:2rem 0 2rem 1rem;
+			overflow: auto;
+		}
+		.top {
+			display: flex;
+		}
+		.top .icon-panel{
+			flex: 0 0 4rem;
+		}
+		.heads-img{
+		    height:4rem;
+            width:4rem;
+			border-radius: 50%;
+		    overflow:hidden;
+		    text-align:center;
+		}
+       #myimg{
+           max-height:4rem;
+		}
+		.top .title {
+			display: inline-block;
+			vertical-align: top;
+			padding-left: 0.8rem;
+			padding-top: 0.5rem;
+			flex:1;
+			font-size:0.9rem;
+		}
+        #enterprisename{
+		   min-width:4.1rem;
+		   font-size:0.95rem;
+		}
+		.time{
+		font-size:0.8rem;
+		margin-top:0.5rem;
+		}
+		.top .money {
+		    margin-top:0.5rem;
+			font-size:0.8rem;
+			color:#fff;
+			border:1px solid #fff;
+			border-right:none;
+			height:2rem;
+			line-height:2rem;
+			width:5.5rem;
+			text-align:center;
+		   border-bottom-left-radius: 0.7rem;
+           border-top-left-radius: 0.7rem;
+		}
+/*		.top .money:active{
+		border:1px solid #ff6666;
+		color:#ff6666;		
+		}*/
+		.aui-iconfont{padding-right:0.5rem;}
+		.listgroup{ font-size:0.9rem;}
+		.aui-list-view-cell{padding:0.6rem;}
+	    .aui-list-view-cell:last-child:after{border-bottom:none}
+		.aui-list-view-cell img{width:1.75rem;height:1.75rem;vertical-align: middle;margin-right:0.5rem;margin-left:0.2rem}
+    </style>
+</head>
+<body>
+	<header>
+	     <div class="list top">
+	            <div class="head">
+	              <label for="file">
+	                <div class='heads-img'>
+	                  <img src="../image/awatar.png" alt="头像" id='myimg'/> <!--显示头像-->
+	                </div>
+	              </label>
+	              <input  style='display:none' type="file" name='file' id='file' value='' onchange="setImg()"/> <!--上传图像的表单-->
+	            </div>
+				<div class="title">
+                    <div id='enterprisename'>企业名</div>
+					<div class="time">
+					   <span class='aui-iconfont aui-icon-friendfamous' style="padding:0"></span>
+					   <span class='truename'>未实名</span>
+					</div>
+				</div>
+				<div class='money' onclick="fnOpenWin('bs_mywallet','bs_mywallet.html')">
+				   <span >我的钱包</span>
+				</div>
+		</div>
+	</header>
+	
+	<div class='listgroup'>
+	 <ul class="aui-list-view">
+	 	<li class="aui-list-view-cell" data-win="list_arrow" onclick="fnOpenWin('bs_message','bs_message.html')">
+	 		<img src="../image/center1.png"/><span class="aui-arrow-right">企业信息</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list_thumb" onclick="fnOpenWin('bs_trueName','bs_trueName.html')">
+	 		<img src="../image/center2.png"/><span class="aui-arrow-right">实名认证</span>
+	 	</li>
+	 	<li class="aui-list-view-cell share" data-win="list-image">
+	 		<img src="../image/center3.png"/><span class="aui-arrow-right">推荐分享</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick="fnOpenWin('bs_new','bs_new.html')">
+	 		<img src="../image/center4.png"/><span class="aui-arrow-right">新闻资讯</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick="fnOpenWin('bs_feedback','bs_feedback.html')">
+	 		<img src="../image/center5.png"/><span class="aui-arrow-right" >意见反馈</span>
+	 	</li>
+<!--	 	<li class="aui-list-view-cell" data-win="list-image" onclick='fnversion()'>
+	 		<img src="../image/center6.png"/><span>版本更新</span>
+	 	</li>-->
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick="fnOpenWin('bs_more','bs_more.html')">
+	 		<img src="../image/more.png"/><span>更多</span>
+	 	</li>
+	 </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/share.js"></script>
+<script type="text/javascript" src="../script/ajaxfileupload.js"></script>
+<script type="text/javascript">
+      var wx;
+      var imgsouce;
+     apiready=function(){
+         wx = api.require('wx');
+         upname();
+         refresh()
+        requestimg()
+     }
+     var username=$api.getStorage('username');
+/*头部信息更新*/
+   function upname(){
+     api.ajax({
+	     url:'http://106.14.69.92/Appmanager/login/selectInfo?username='+username
+     },function(ret,err){
+     	if(ret){
+     	     var bsname=ret.school;
+	     	 $('#enterprisename').text(bsname);
+	     	 $('.truename').text('已实名') 	
+     	}else{
+     	 console.log('未实名')
+     	}
+     });
+   
+   }
+   function updatename(centername){
+       $('#enterprisename').text(centername);
+	   $('.truename').text('已实名') 
+   }
+/*推荐分享微信功能*/
+	   $(function(){
+	    $(".share01").click(function(){
+            $('.Smohan_Layer_box').hide()
+            $('.Smohan_Layer_Shade').hide()            
+			wx.shareImage({
+				    scene: 'timeline',
+				    thumb: "widget://image/icon.png",
+				    contentUrl:"widget://image/icon.png"
+				}, function(ret, err) {
+				    if (ret.status){
+				        api.toast({
+	                        msg:'分享图片成功'
+                        });
+				     }
+				})
+         })
+     })
+     
+     /*打开各个页面*/
+  function fnOpenWin(name,url){
+	   api.openWin({
+	      name:name,
+	      url:url
+	   })
+	  }
+  var username=$api.getStorage('username');
+	/*设置头部头像*/
+	function setImg(){	
+	  var file=$("input[name='file']").val();
+		 $.ajaxFileUpload({
+			 url:'http://106.14.69.92/Appmanager/login/uploads', //用于文件上传的服务器端请求地址
+			 data:{
+				 username:username,
+				 file:file
+			 },
+			 secureuri: false, //是否需要安全协议，一般设置为false
+			 fileElementId: 'file', //文件上传域的ID
+			 dataType: 'json', //返回值类型 一般设置为json
+			 success: function (data, status){ //服务器成功响应处理函数
+			  $("#myimg").attr('src',data.info)
+			  $api.setStorage('imgsrc',data.info);	
+		  },
+		 error: function (data, status, e){//服务器响应失败处理函数
+		     console(JSON.stringify(err))
+		 }
+		 })
+   }
+  function requestimg(){
+      api.ajax({
+	      url:'http://106.14.69.92/Appmanager/login/Head?username='+username,
+	      method:'get'
+      },function(ret,err){       
+          console.log(JSON.stringify(ret));
+      	 if(ret.result=="fail"){	
+            return;  
+      	 }else{
+      	$('#myimg').attr('src','http://106.14.69.92/Appmanager/'+ret.info)
+      	 }
+      });
+  
+  }
+  function refresh(){         
+        api.setRefreshHeaderInfo({
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#ccc',
+				textColor : '#fff',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...'
+			}, function(ret, err) {
+				//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				if (ret) {
+//                 $("#myimg").attr('src',imgsouce);
+					api.refreshHeaderLoadDone();
+				}
+		});	       
+  }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>首页</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+		<style>
+			body {
+				height: 100%;
+				
+			}
+			.wrap {
+				height: 100%;
+				background: #f5f5f5;
+				position: absolute;
+				width: 100%;
+				
+			}
+			.top_icon {
+				display: box;
+				display: -webkit-box;
+				display: -moz-box;
+				text-align: center;
+				background:#FFFFFF;
+			}
+			.left_icon {
+				box-flex: 1;
+				-moz-box-flex: 1;
+				-webkit-box-flex: 1;
+				padding-right: 0.25rem
+			}
+			.right_icon {
+				box-flex: 1;
+				-moz-box-flex: 1;
+				-webkit-box-flex: 1;
+				padding-left: 0.25rem
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<!-- 顶部内容按钮 -->
+			<div class="top_icon">
+				<!-- 已开通考场 -->
+				<div onclick="openRoom('alreadyRoom.html')" class="left_icon"><img style="margin: 0 auto" src="../image/left_icon.png">
+				</div>
+				<!-- 全部考场 -->
+				<div onclick="openRoom('allTitleRoom.html')" class="right_icon"><img style="margin: 0 auto" src="../image/right_icon.png">
+				</div>
+			</div>
+			<!-- 中间内容 -->
+				<div id="evaluation"></div>
+				
+				
+			
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/jquery-1.10.1.min.js"></script>
+	<script src="../script/swiper-3.4.2.jquery.min.js"></script>
+	<script type="text/javascript" src="../script/doT.min.js"></script>
+	<script id="evaluationtmpl" type="text/x-dot-template">
+	{{ for(var i in it) { }}
+		<div onclick="openWin('{{=it[i].basicid}}','{{=it[i].basic}}')" class="aui-content aui-margin-b-10">
+	        <ul class="aui-list aui-media-list">
+	            <li class="aui-list-item aui-list-item-arrow">
+	                <div class="aui-media-list-item-inner">
+	                    <div class="aui-list-item-inner">
+	                        <div class="aui-list-item-text">
+	                            <div class="aui-list-item-title"><div class="aui-label aui-label-danger">热门</div><div class="aui-label aui-label-info aui-margin-l-10">{{if(it[i].basicdemo==1){  }}免&nbsp&nbsp费 {{  }}}{{else{ }}收&nbsp&nbsp费{{} }}</div></div> 
+	                        </div>
+	                        <div class="aui-list-item-text aui-ellipsis-2">
+	                            {{=it[i].basic}}<br>
+	                            {{=it[i].basicsubjectid}}
+	                        </div>
+	                    </div>
+	                </div>
+	            </li>
+	          </ul>
+	    </div>
+	{{ } }}
+	</script>
+	<script type="text/javascript">
+		var basicid =  '';
+		apiready = function() {
+			api.setRefreshHeaderInfo({
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#ccc',
+				textColor : '#fff',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...'
+			}, function(ret, err) {
+				//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				if (ret) {
+					window.location.reload();
+					api.refreshHeaderLoadDone();
+				}
+			});
+			/*请求 */	
+			islogin();
+			Request();
+		};
+		function Request() {
+			api.showProgress({
+			msg:"加载中。。。"
+            });
+			api.ajax({
+				url : 'http://examapi.xiaozo.cn/index.php?content-app-index',
+				method : 'post',
+				dataType : 'json',
+				cache : true,
+				data : {
+					values : {
+						userhash : "123"
+					}
+				}
+			}, function(ret, err) {
+				api.hideProgress();
+				if (ret.statusCode == 200) {
+					var data = ret.data.basics.basic;
+					console.log(JSON.stringify(data));
+					
+					if (JSON.stringify(data) == '[false]') {
+						api.alert({
+							msg : "请先联系管理员开通考场"
+						});
+						$("#showinfo").html("<p style='text-align:center'>您未开通考场</p>");
+					} else {
+						
+						var evalText = doT.template($("#evaluationtmpl").text());
+						$("#evaluation").html(evalText(data));
+					}
+				} else if (ret.statusCode == 301) {
+					$api.clearStorage();
+					api.openWin({
+						reload : true,
+						name : 'login',
+						url : 'c_login.html',
+					});
+				} else {
+					api.toast({
+						msg : JSON.stringify(err.msg)
+					});
+				}
+			});
+		}
+		
+		function islogin(){
+			api.ajax({
+				url : 'http://examapi.xiaozo.cn/index.php?user-app-login',
+				method : 'post',
+				dataType : 'json',
+				data : {
+					values : {
+						userhash : "123"
+					}
+				}
+			},function(ret,err){
+				if(ret.statusCode==300){
+					console.log(ret.statusCode);
+					$api.clearStorage();
+				}
+				else if(ret.statusCode==200){
+					var key = 'user';
+					var user = {};
+					user.flag = 1;
+					$api.setStorage(key, user);
+				}
+			})
+		}
+		
+		/*有数据跳转到菜单选择界面*/
+		function openWin(id,name) {
+			var key = 'user';
+			var user = $api.getStorage(key);
+			if (user != null) {
+				api.showProgress({
+				msg:"加载中。。。"
+	            });
+	            //数据库
+				api.ajax({
+					url : 'http://examapi.xiaozo.cn/index.php?exam-app-basics-detail',
+					method : 'post',
+					dataType : 'json',
+					data : {
+						values : {
+							basicid:id,
+							userhash:123,
+						}
+					}
+				}, function(ret, err) {
+					api.hideProgress();
+					console.log(ret.statusCode);
+					if (ret) {
+							if(ret.statusCode==200){
+							
+							if(ret.data.isopen!=false){
+								api.ajax({
+									url : 'http://examapi.xiaozo.cn/index.php?exam-app-index-setCurrentBasic',
+									method : 'post',
+									dataType : 'json',
+									data : {
+										values : {
+											basicid:id,
+											userhash:123,
+										}
+									}
+								}, function(ret, err) {
+									api.hideProgress();
+									console.log(JSON.stringify(ret));
+									if (ret) {
+											if(ret.statusCode==200){
+											api.toast({
+				                            	msg:ret.message
+				                            });
+											console.log(JSON.stringify(ret));
+											
+											api.openWin({
+								            name: 'titleMenu',
+								            url: 'titleMenu.html'
+							            	});
+											}
+									} else {
+										api.alert({
+											msg : JSON.stringify(err.msg)
+										});
+									}
+								});
+							}
+							else{
+								api.openWin({
+	                                name: 'titlePhoneDetail',
+	                                url: 'titlePhoneDetail.html',
+	                               	pageParam:{'id':id,'name':name}
+                                });
+							}
+							
+							}
+							else if (ret.statusCode == 301) {
+								//$api.clearStorage();
+								api.openWin({
+									reload : true,
+									name : 'login',
+									url : 'c_login.html',
+								});
+							}
+					} else {
+						api.alert({
+							msg : JSON.stringify(err.msg)
+						});
+					}
+				});
+			}else {
+				api.openWin({
+					name : 'c_login',
+					url : 'c_login.html',
+				});
+			}
+		}
+		
+		function openRoom(url) {
+			var key = 'user';
+			var user = $api.getStorage(key);
+			if (user != null) {
+			api.openWin({
+				name : 'examRoom',
+				url : url,
+			});
+		}
+		else {
+				api.openWin({
+					name : 'c_login',
+					url : 'c_login.html',
+				});
+			}
+		}
+	</script>
+</html>

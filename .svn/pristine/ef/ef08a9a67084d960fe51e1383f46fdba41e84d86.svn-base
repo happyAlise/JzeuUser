@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	.tabbar {height:3rem;line-height:3rem;
+    	text-align: center;border-bottom:1px solid #e0e0e0;
+    	position:fixed;top:0;z-index:100;display:flex;background:#fff;width:100%}
+        .col {-webkit-box-flex:1; -webkit-flex:1; flex:1;position: relative;font-size: 14px;}
+		.active {color:#f60;}
+		.presshover {background-color: #FAFAFA !important;}
+		.listbox{padding-top:4rem;}
+		/*列表1*/
+		     #list1,#list2,#list3{margin-top:-40px;position:relative;z-index:0}
+			 .list {
+				margin: 0.3rem 0.1rem 0.5rem 0.1rem;
+				border: 1px solid #f2f2f2;
+				overflow: auto;
+				background:#fff;		
+			}
+			.top {
+				display: flex;
+				padding: 1rem 0.7rem;
+			}
+			.top img {
+                height:3rem;
+                width:3rem;
+				flex: 0 0 3rem;
+			}
+			.top .title {
+				display: inline-block;
+				vertical-align: top;
+				padding-left: 1rem;
+				padding-top: 0.3rem;
+				flex: 1;
+				font-size:0.9rem;
+			}
+			.time{
+			font-size:0.8rem;
+			margin-top:0.2rem;
+			}
+			.top .state {
+				font-size:0.9rem;
+				color: #FF6600;
+				margin-top: 1rem;
+				margin-right:0.7rem;
+			}
+			.bottom{
+			width:100%;
+			font-size:0.9rem;
+			color: #FF6600;
+			height:2.1rem;
+			line-height:2.1rem;
+			border-top:1px solid #ededed;
+			}
+			.edit{
+			margin-right:0.5rem;
+			width:4rem;
+			text-align:center;
+			border-left:1px solid #ededed;
+			}
+			.borderd{border-bottom:2px solid #f60;color:#f60}
+    </style>
+</head>
+<body>
+   <div class="tabbar" id='nav'>
+		<div class="col" id="col1"  tapmode="active" onclick="tabswitch(1)" >
+			等待审核
+		</div>		
+		<div class="col"  id="col2"  tapmode="active" onclick="tabswitch(2)">
+			正在招聘
+		</div>
+		<div class="col" id="col3"  tapmode="active" onclick="tabswitch(3)">
+			截止报名
+		</div>
+	</div>
+	
+<div class='listbox'>
+	<div id="list1"></div>
+	<div id="list2"></div>
+	  <div id="list3">
+	    <div class="list" >
+			  <div class="top">
+				<img src="../image/fagongzi.png" />
+				<div class="title">
+				    <div>单行列表标题效果</div>
+					<p class="time">2017-05-15</p>
+				</div>
+				<div class='state'>
+				   <span >状态码</span>
+				</div>
+			  </div>
+		</div>
+	  </div> 	
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+        apiready=function(){
+          tabswitch(1);	       
+        }
+	function tabswitch(type){
+			if (type == 1){
+			   $('#col1').addClass('borderd').siblings().removeClass('borderd');               
+               $('#list1').css('display','block').siblings().css('display','none');
+               api.showProgress({
+				msg:"加载中。。。"
+	            });
+               requestExamine();		
+			}
+			else if (type == 2) {
+				 $('#col2').addClass('borderd').siblings().removeClass('borderd');
+				 $('#list2').css('display','block').siblings().css('display','none');
+				  api.showProgress({
+					msg:"加载中。。。"
+		          });
+				 requestZhaoping()
+			}else {
+				$('#col3').addClass('borderd').siblings().removeClass('borderd')
+                $('#list3').css('display','block').siblings().css('display','none')
+			}
+	}
+	    var username = $api.getStorage('username');
+	/*等待审核*/
+     function requestExamine(){    
+           $.ajax({
+				url :'http://106.14.69.92/Appmanager/Jzmanagement/examine?username='+username,				
+				success:function(msg){
+				console.log(JSON.stringify(msg));
+				api.hideProgress();
+				  var list;
+				   for(var i=0;i<msg.length;i++){
+				     list=list+"<div class='list' onclick='fnopenjobwin("+msg[i].id+")'><div class='top'><img src='"+msg[i].url+"' class='list1img'/>"
+				      +"<div class='title'><div>"+msg[i].title+"</div><p class='time'>"+msg[i].datebegin+
+				      "</p></div><div class='state'><span >状态码</span></div></div></div>"	      
+				  }
+				  $('#list1').html(list)
+				},
+				error:function(data){
+				 console.log(data)
+				}
+			});
+        }
+      function fnopenjobwin(id){
+			api.openWin({
+				name : 'jobdetail',
+				url : './jobdetail.html',
+				pageParam:{'wid':id}
+			})
+		}
+ /*正在招聘*/
+      function requestZhaoping(){
+       api.showProgress({
+				msg:"加载中。。。"
+	            });
+           $.ajax({
+             type:'GET',
+             url : 'http://106.14.69.92/Appmanager/Jzmanagement/examine?username='+username,				
+//           url:'http://106.14.69.92/Appmanager/Jzmanagement/zhengzaizhaop?username='+username,
+             success:function(msg){
+               console.log(JSON.stringify(msg)); 
+               api.hideProgress();
+              var list;
+				   for(var i=0;i<msg.length;i++){
+				     list=list+"<div class='list'><div class='top'><img src='"+msg[i].url+"' class='list1img'/>"
+				      +"<div class='title'><div>"+msg[i].title+"</div><p class='time'>"+msg[i].datebegin+
+				      "</p></div><div class='state'><span >状态码</span></div></div></div>"	      
+				  }
+				  $('#list2').html(list)
+				},
+				error:function(data){
+				 console.log(data)
+				}           
+           })      
+      }
+ /*截止报名*/
+
+
+
+
+
+
+
+
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

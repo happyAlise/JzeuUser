@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+    .aui-input-row{padding:0 10px}
+    .content{padding:0.5rem 1rem;color:#000}
+    textarea{background:#fff;padding:0.5rem 1rem;border:1px solid #c8c7cc}
+     .aui-btn{background:#FF6600;border-radius: 2px;height:2.5rem;
+       line-height:2.5rem;font-size:0.9rem;border:none;padding:0;
+       position:fixed;bottom:0;
+       }
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style='padding-top:25px'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#0cf"></span>
+		</a>
+		<div class="aui-title">薪资信息</div>
+	</header>
+	<div class="aui-form">
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="title">职位标题</label></span>
+			<input type="text" class="aui-input" id="title">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="kind">岗位类型</label></span>
+			<input type="text" class="aui-input" id="kind">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="kind">岗位薪资 </label></span>
+			<input type="text" class="aui-input" id="kind">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="kind">工作人数 </label></span>
+			<input type="text" class="aui-input" id="kind">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="kind">工作时间</label></span>
+			<input type="text" class="aui-input" id="kind">
+		</div>
+	</div>
+	<p class='content'>工作内容</p>
+	<textarea  rows="5"></textarea>
+	<div class="aui-form">
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="title">薪资总额</label></span>
+			<input type="text" class="aui-input" id="title">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="kind">负责人</label></span>
+			<input type="text" class="aui-input" id="kind">
+		</div>
+	</div>
+	<div class="aui-btn aui-btn-block aui-btn-success" onclick="return false;">确认提交</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+   
+	apiready = function(){
+		 var header=$api.dom(header); 
+     $api.fixStatusBar(header);
+	};
+</script>
+</html>

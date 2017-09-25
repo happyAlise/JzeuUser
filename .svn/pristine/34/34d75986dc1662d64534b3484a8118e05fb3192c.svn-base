@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+
+    	header{
+    	height:25vh;
+    	width:100%;
+    	background:#00ccff;
+    	margin-bottom:0.5rem;
+    	color:#fff;
+    	}
+    	
+	  .list{
+			padding:2rem 0 2rem 1rem;
+			overflow: auto;
+		}
+		.top {
+			display: flex;
+		}
+		.top .icon-panel{
+			flex: 0 0 4rem;
+		}
+		.top .icon-panel .icon{
+		    border:1px solid green;
+			height:4rem;
+			border-radius: 50%;
+		}
+		.top .title {
+			display: inline-block;
+			vertical-align: top;
+			padding-left: 1rem;
+			padding-top: 0.3rem;
+			flex: 1;
+			font-size:0.9rem;
+		}
+		.time{
+		font-size:0.8rem;
+		margin-top:1rem;
+		}
+		.top .money {
+		    margin-top:0.5rem;
+			font-size:0.8rem;
+			color:#fff;
+			border:1px solid #fff;
+			border-right:none;
+			height:2rem;
+			line-height:2rem;
+			width:6.5rem;
+			text-align:center;
+		   border-bottom-left-radius: 0.7rem;
+           border-top-left-radius: 0.7rem;
+		}
+		.aui-iconfont{padding-right:0.5rem;}
+		.listgroup{ font-size:0.9rem;}
+		.aui-list-view-cell{padding:8px;}
+		.aui-list-view-cell img{width:35px;height:35px;vertical-align: middle;margin-right:0.5rem;margin-left:0.2rem}
+    </style>
+</head>
+<body>
+	<header>
+	     <div class="list">
+	        <div class="top">
+	            <div class="icon-panel" tapmode onclick="fnSetAvatar()">
+		            <div id="icon" class="icon"></div>
+		        </div>
+				<div class="title">
+				    <div id=''>企业名</div>
+					<div class="time"><span class='aui-iconfont aui-icon-friendfamous' style="padding:0"></span>未实名</div>
+				</div>
+				<div class='money' onclick="fnOpenWin('bs_wallet','bs_wallet.html')">
+				   <span >我的钱包</span>
+				</div>
+			  </div>
+		</div>
+	</header>
+	
+	<div class='listgroup'>
+	 <ul class="aui-list-view">
+	 	<li class="aui-list-view-cell" data-win="list_arrow" onclick="fnOpenWin('bs_message','bs_message.html')">
+	 		<img src="../image/center1.png"/><span class="aui-arrow-right">企业信息</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list_thumb" onclick="fnOpenWin('bs_trueName','bs_trueName.html')">
+	 		<img src="../image/center2.png"/><span class="aui-arrow-right">实名认证</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image">
+	 		<img src="../image/center3.png"/><span class="aui-arrow-right">推荐分享</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick="fnOpenWin('bs_new','bs_new.html')">
+	 		<img src="../image/center4.png"/><span class="aui-arrow-right">新闻资讯</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick="fnOpenWin('bs_feedback','bs_feedback.html')">
+	 		<img src="../image/center5.png"/><span class="aui-arrow-right" >意见反馈</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick='fnversion()'>
+	 		<img src="../image/center6.png"/><span>版本更新</span>
+	 	</li>
+	 	<li class="aui-list-view-cell" data-win="list-image" onclick="fnOpenWin('bs_more','bs_more.html')">
+	 		<img src="../image/more.png"/><span>更多</span>
+	 	</li>
+	 </ul>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	  function fnOpenWin(name,url){
+	   api.openWin({
+	      name:name,
+	      url:url
+	   })
+	  }
+	  function fnversion(){
+	  api.alert({
+      title: '软件更新',
+      msg: ' 当前版本 1.2 \n当前已是最新版本,无需更新',
+      }, function(ret, err) {
+      });  
+	}　
+apiready = function(){
+       fnGetUserInfo();
+    };
+function fnGetUserInfo () {
+    var userInfo = $api.getStorage('userInfo');
+    api.ajax({
+        url: 'http://106.14.69.92/Appmanager/login/uploads/' + userInfo.userId,
+        method: 'get',
+        headers: {
+           "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }, function(ret, err) {
+        if (ret) {
+            //alert(JSON.stringify(ret));
+            fnUpdateLocalAvatar(ret);
+        } else {
+            console.log(JSON.stringify(err));
+        }
+    });
+}
+function fnSetAvatar() {
+    api.actionSheet({
+        title: '选择',
+        cancelTitle: '取消',
+        buttons: ['拍照', '相册']
+    }, function(ret, err) {
+        if (ret) {
+            var sourceTypes = [
+                'camera',
+                'album'
+            ];
+            api.getPicture({
+                sourceType: sourceTypes[ret.buttonIndex - 1],
+                allowEdit: true,
+                quality: 50,
+                targetWidth: 100,
+                targetHeight: 100,
+                saveToPhotoAlbum: false
+            }, function(ret, err) {
+                if (ret) {
+                    console.log(JSON.stringify(ret));
+                    fnUploadAtavar(ret.data);
+                } else {
+                    console.log(JSON.stringify(err));
+                }
+            });
+
+        } else {
+            console.log(JSON.stringify(err));
+        }
+    });
+}
+function fnUploadAtavar(avatarUrl_) {
+    api.ajax({
+        url: 'http://106.14.69.92/Appmanager/login/uploads',
+        method: 'post',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+            values: {
+                filename: 'icon'
+            },
+            files: {
+                file: avatarUrl_
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+            //alert(JSON.stringify(ret));
+            fnUpdateUserAtavar(ret);
+        } else {
+            console.log(JSON.stringify(err));
+        }
+    });
+}
+function fnUpdateUserAtavar(avatar_) {
+    var userInfo = $api.getStorage('userInfo');
+    api.ajax({
+        url: 'http://106.14.69.92/Appmanager/login/uploads/' + userInfo.userId,
+        method: 'put',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+            values: {
+                avatar: avatar_
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+            alert(JSON.stringify(ret));
+            fnUpdateLocalAvatar(ret);
+        } else {
+            console.log(JSON.stringify(err));
+        }
+    });
+}
+function fnUpdateLocalAvatar (data_) {
+    var icon = $api.byId('icon');
+    if (!data_.avatar) {
+        return;
+    }
+    api.imageCache({
+        url: data_.avatar.url
+    }, function(ret, err){
+        if(ret) {
+             //alert(JSON.stringify(ret));
+             icon.style.background = 'url(' + ret.url + ')';
+        } else {
+             console.log(JSON.stringify(err));
+        }
+    });
+   }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

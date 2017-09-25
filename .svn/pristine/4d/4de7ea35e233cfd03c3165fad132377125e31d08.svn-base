@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+
+    	.row {display: -webkit-box;display: -webkit-flex;background:#fff;}
+		.menu{-webkit-box-flex:1; -webkit-flex:1; flex:1;position: relative;font-size:0.9rem}
+    	.tabbar {height: 50px;line-height: 50px;text-align: center;border-bottom: 1px solid #e0e0e0;}
+		.tabbar .col {font-size: 14px;}
+		.selected{color: #f60;border-bottom:2px solid #FF6600}
+    </style>
+</head>
+<body>
+   <div class="row  tabbar" id='nav' tapmode  onclick='api.openFrameGroup()'>
+		<div class="menu"  onclick="fnSetNavMenuIndex(0)">报名</div>		
+		<div class="menu"  onclick="fnSetNavMenuIndex(1)">录用</div>
+		<div class="menu"  onclick="fnSetNavMenuIndex(2)">结算</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+      var nav=$api.byId('nav');
+      var navH=$api.offset(nav).h;
+       console.log(navH)
+	  var  menus = $api.domAll(nav, '.menu');
+   
+     apiready=function(){
+	     openFrames();	 
+    }
+    	
+  function openFrames(){
+    var frames = [
+        {name:'baoming',url:'./baoming.html'},
+        {name:'luyong',url:'./luyong.html'},
+        {name:'jiesuan',url:'./jiesuan.html'}
+        ];
+    api.openFrameGroup({
+        name: 'frameGroup',
+        scrollEnabled:true,
+        rect: {
+            x: 0,
+            y: '75',
+            w: 'auto',
+            h: 'auto'
+        },
+        index:1,
+        frames: frames,     
+    }, function(ret, err) {
+        fnSetNavMenuSelected(ret.index);
+        console.log(ret.index)
+    }); 
+}
+
+function fnSetNavMenuIndex(index_) {
+    fnSetNavMenuSelected(index_);
+    api.setFrameGroupIndex({
+        name: 'frameGroup',
+        index: index_,
+        scroll: true
+    });
+       console.log(index_)
+}
+
+function fnSetNavMenuSelected(index_) {
+    for (var i =0; i < menus.length; i++) {
+        if (index_ == i) {
+            $api.addCls(menus[i], 'selected');
+        } else {
+            $api.removeCls(menus[i], 'selected');
+        }
+    }
+}
+
+ 
+
+</script>
+</html>

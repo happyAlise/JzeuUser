@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css">
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css">
+    <style>
+        nav{
+    	width:100%;
+    	margin-bottom:0.5rem;
+    	padding-top:1rem;
+    	padding-bottom:1rem;
+    	background:#fff;
+    	}
+    	.nav-img{
+    	margin:0 auto;
+        text-align:center;
+    	width:5rem;
+    	height:5rem;
+    	border-radius:50%;
+    	overflow:hidden;
+    	}
+    	.nav-img img{
+    	  margin-bottom:7px;
+    	  max-height:5rem;
+    	}
+    	.aui-input-row .aui-input-addon{
+    	border-right:1px solid #d7d7d7;
+    	padding: 10px !important;
+    	color:#666;
+    	}
+    	.aui-input-row{
+    	padding:0;
+    	}
+    	.shiti{border:none !important;padding-left:20px !important}
+    	#showinfo{margin-top:38%;}
+    	h1{text-align:center;margin-top:2rem;color:#f60}
+    	p{text-align:center;font-size:0.85rem;margin-top:0.2rem;padding-bottom: 0.5rem}
+    </style>
+</head>
+<body>
+	   <nav>
+		    <div class="nav-img">
+		       <img src="../image/awatar.png">    
+		    </div>
+	  </nav>
+	  
+	<div class="aui-form"  id='evaluation'>
+	  <script id="evaluationtmpl" type="text/x-dot-template">
+		<div class="aui-input-row">
+			<span class="aui-input-addon">申请姓名</span>
+			<span class="aui-input-addon shiti">{{=it.name}}</span>
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">身份证号</span>
+			<span class="aui-input-addon shiti">{{=it.cardnum}}</span>
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">企业代码</span>
+			<span class="aui-input-addon shiti">{{=it.phone}}</span>
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">企业名称</span>
+			<span class="aui-input-addon shiti name">{{=it.school}}</span>
+		</div>		
+		<div class='tips'>
+		     <h1>认证审核中...</h1>
+		     <p>上班时间3小时内完成审核, 上班时间： 09:00至21:00</p>
+	    </div>
+	 </script>
+	</div> 
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	    var username=$api.getStorage('username');
+	    api.showProgress({
+	      msg:"正在加载中..."
+        });
+		api.ajax({
+	        url:'http://106.14.69.92/Appmanager/login/selectInfo?username='+username
+        },function(ret,err){
+        	console.log(JSON.stringify(ret));
+        	api.hideProgress();
+        	if(ret){
+	        	if(ret.status== null){
+	                var div="<div id='showinfo'></div>";
+	                $("body").append(div);
+					$("#showinfo").html("<p style='text-align:center'>请先进行企业认证</p>");
+		            return;
+	        	}else if(ret.status== -1){
+		        	var data=ret;
+		        	var evalText = doT.template($("#evaluationtmpl").text());
+					$("#evaluation").html(evalText(data));
+					 var imgsrc=$api.getStorage('imgsrc');
+		      	    $('img').attr('src',imgsrc);
+		      	         	    
+	          }else{
+	                var data=ret;
+		        	var evalText = doT.template($("#evaluationtmpl").text());
+					$("#evaluation").html(evalText(data));
+					 var imgsrc=$api.getStorage('imgsrc');
+		      	    $('img').attr('src',imgsrc); 
+	                var successTips=" <h1>已认证成功</h1>"
+	                $('.tips').html(successTips)	          	          
+	          }
+
+         }else{
+           alert(JSON.stringify(err))
+         }
+	});
+  }
+</script>
+</body></html>

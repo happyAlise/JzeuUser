@@ -1,0 +1,429 @@
+<<<<<<< .mine
+<html><head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css">
+	<link rel="stylesheet" type="text/css" href="../css/aui.css">
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/api.css">
+    <link rel="stylesheet" href="../css/mobiscroll.css">
+    <link rel="stylesheet" href="../css/mobiscroll_002.css">
+    <link rel="stylesheet" href="../css/mobiscroll_003.css">
+    <script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../script/jquery-1.js"></script>
+	<script type="text/javascript" src="../script/mobiscroll_002.js"></script>
+	<script type="text/javascript" src="../script/mobiscroll_003.js"></script>
+	<script type="text/javascript" src="../script/mobiscroll_004.js"></script>
+	<script type="text/javascript" src="../script/mobiscroll_005.js"></script>
+	<script type="text/javascript" src="../script/mobiscroll.js"></script>
+	<script type="text/javascript" src="../script/distpicker.data.js"></script>
+	<script type="text/javascript" src="../script/distpicker.js"></script>
+
+	<script type="text/javascript" src="../script/main.js"></script>
+  <style>
+    body{color:#333}
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+    .aui-input-row{padding:0 10px;background:#fff}
+    .aui-list-item{height:2.5rem;line-height:2.5rem;width:100%;border-bottom:1px solid #c8c7cc}
+    .title{display:inline-block;font-size:0.85rem;padding:0 16px}
+    .aui-list-item-input{display:inline-block;padding:0;}
+    .aui-list-item-input select{padding:0;padding-right:1.5rem;padding-left:1rem;border:none;width:5rem}
+    .aui-icon-unfold{position:relative;left:-1.5rem;top:-2px;display:inline-block;width:20px;height:20px;}
+    .salary{position:absolute;right:5px;top:4px;display:block}
+    .time{width:8rem !important;font-size:10px;padding: 0 !important;margin-top:0.5rem !important;}
+    .apptimes{display:inline;width:5.5rem;padding:0;position:relative;top:0.4rem;height:1rem;border:1px solid #fff !important}
+    textarea{background:#fff;padding:10px;}
+    p{margin:10px 0 7px 12px;color:#333}
+    .aui-btn{background:#FF6600;border-radius: 2px;height:2.5rem;font-size:0.9rem;border:none;line-height:2.5rem;padding:0}
+    .area select{display:inline-block;width:18%;height:1.3rem;line-height:1.3rem;padding:0;margin-right:0;font-size:0.6rem;vertical-align:top;
+    margin-top:0.5rem;border:none}
+    .area i{position:relative;left:0}
+    .area{display:inline-block !important;flex:1;margin-right:0}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">编辑职位</div>
+	</header>
+	<div class="aui-form">
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="title">岗位标题</label></span>
+			<input type="text" class="aui-input" id="title">
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon"><label for="kind">岗位类型</label></span>
+			<input type="text" class="aui-input" id="kind">
+		</div>
+		<div class=" aui-list-item">
+            <div class="aui-list-item-label title">
+               <label for="sex">性别要求</label>
+            </div>
+            
+            <div class="aui-list-item-input" id="sex">
+                <select class="">
+                    <option>男</option>
+                    <option>女</option>
+                    <option>不限</option>
+                </select>
+            </div>
+             <i class="aui-iconfont aui-icon-unfold"></i>
+	     </div>   
+	    <div class="aui-list-item" style="border:none">
+            <div class="aui-list-item-label title">
+                  <label for="methods">结算方式</label>
+            </div>
+            <div class="aui-list-item-input" id="methods">
+                <select class="">
+                    <option>日</option>
+                    <option>次</option>
+                    <option>时</option>
+                    <option>周</option>
+                    <option>月</option>
+                </select>
+            </div>
+             <i class="aui-iconfont aui-icon-unfold"></i>
+	     </div> 
+	    <div class="aui-list-item" style="display:flex;position:relative">
+            <div class="aui-input-row">
+				<span class="aui-input-addon"><label for="salary">工资待遇</label></span>
+				<input type="text" class="aui-input" style="height:2.5rem;border:none">
+		   </div> 
+            <div class="aui-list-item-input salary" id="salary">
+                <select style="width:5.5rem" class="salary">
+                    <option>元/日</option>
+                     <option>元/次</option>
+                    <option>元/时</option>
+                    <option>元/周</option>
+                    <option>元/月</option>
+                     <option>面议</option>
+                </select>
+            </div>
+             <i class="aui-iconfont aui-icon-unfold"></i>
+	     </div> 
+	     <div class="aui-input-row">
+			<span class="aui-input-addon"><label for="num">招聘人数</label></span>
+			<input type="text" class="aui-input" id="num">
+		</div>
+		<div class="aui-input-row" style="height:2.5rem;">
+      		<span class="aui-input-addon"><label for="appDate1">职位开始时间</label></span>
+            <input  class="apptimes" readonly="" name="appDate1" id="appDate1" type="text" style="">
+		</div>
+		<div class="aui-input-row" style="height:2.5rem;">
+			<span class="aui-input-addon"><label for="appDate2">职位结束时间</label></span>
+			<input class="apptimes" readonly="" name="appDate2" id="appDate2" type="text">
+		</div>
+	</div>
+	<p>兼职描述</p>
+	<textarea rows="5"></textarea>
+	   <div style="border-top:1px solid #c8c7cc;border-bottom:1px solid #c8c7cc;background:#fff;height:2.7rem;line-height:2.7rem;display:flex;">
+            <span class="aui-list-item-label title" style="flex:0 0 5rem;width:5rem">
+                                         所在区域</span>
+          <div id="distpicker1" class="area">
+			  <select></select><i class="aui-iconfont aui-icon-unfold"></i>
+			  <select style='width:26%'></select><i class="aui-iconfont aui-icon-unfold"></i>
+			  <select></select><i class="aui-iconfont aui-icon-unfold"></i>
+			</div>  
+			  
+	    </div>
+    </div>
+            <div class="aui-input-row" style="margin-top:0">
+			     <span class="aui-input-addon">详细地址</span>
+			     <input type="text" class="aui-input">
+			</div>
+			<div class="aui-input-row">
+			     <span class="aui-input-addon"><label for="contact">联系人</label></span>
+			     <input type="text" class="aui-input" id="contact">
+			</div>
+			<div class="aui-input-row">
+			     <span class="aui-input-addon"><label for="phone">详细电话</label></span>
+			     <input type="text" class="aui-input" id="phone">
+			</div>
+			<div class="aui-input-row">
+			     <span class="aui-input-addon"><label for="email">联系邮箱</label></span>
+			     <input type="text" class="aui-input" id="email">
+			</div>
+	 
+	<div class="aui-btn aui-btn-block aui-btn-success" onclick="return false;">确认发布</div>
+	
+				
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+        
+
+        $(function () {
+         $("#distpicker1").distpicker();
+			var currYear = (new Date()).getFullYear();	
+			var opt={};
+			opt.date = {preset : 'date'};
+			opt.datetime = {preset : 'datetime'};
+			opt.time = {preset : 'time'};
+			opt.default = {
+				theme: 'android-ics light', //皮肤样式
+		        display: 'modal', //显示方式 
+		        mode: 'scroller', //日期选择模式
+				dateFormat: 'yyyy-mm-dd',
+				lang: 'zh',
+				showNow: true,
+				nowText: "今天",
+		        startYear: currYear - 10, //开始年份
+		        endYear: currYear + 10 //结束年份
+			};
+			 $("#appDate1").mobiscroll($.extend(opt['date'], opt['default']));
+		    $("#appDate2").mobiscroll($.extend(opt['date'], opt['default']));
+            $("#appDateTime").mobiscroll(optDateTime).datetime(optDateTime);		  	
+		  	var optDateTime = $.extend(opt['datetime'], opt['default']);
+		  	var optTime = $.extend(opt['time'], opt['default']);		 
+		    $("#appTime").mobiscroll(optTime).time(optTime);
+        });
+    
+    
+
+
+
+
+
+
+
+
+    var header=$api.dom('header');
+    var headerH=$api.offset(header).h;
+    $api.fixStatusBar(headerH);
+	apiready = function(){
+		
+	};
+
+    
+
+
+
+
+
+
+
+
+    var header=$api.dom('header');
+    var headerH=$api.offset(header).h;
+    $api.fixStatusBar(headerH);
+	apiready = function(){
+		
+	};
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>=======
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<link rel="stylesheet" type='text/css' href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    body{color:#333}
+    .aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+    .aui-input-row{padding:0 10px;background:#fff}
+    .aui-list-item{height:2.5rem;line-height:2.5rem;width:100%;border-bottom:1px solid #c8c7cc}
+    .title{display:inline-block;font-size:0.85rem;padding:0 16px}
+    .aui-list-item-input{display:inline-block;padding:0;}
+    .aui-list-item-input select{padding:0;padding-right:1.5rem;padding-left:1rem;border:none;width:5rem}
+    .aui-icon-unfold{position:relative;left:-1.5rem;top:-2px;display:inline-block;width:20px;height:20px;}
+    .salary{position:absolute;right:10px;display:block}
+    .time{width:8rem !important;font-size:10px;padding: 0 !important;margin-top:0.5rem !important;}
+    textarea{background:#fff;padding:10px;}
+    p{margin:10px 0 7px 12px;color:#333}
+    .aui-btn{background:#FF6600;border-radius: 2px;height:2.5rem;font-size:0.9rem;border:none;line-height:2.5rem;padding:0}
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header">
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">编辑职位</div>
+	</header>
+	<div class="aui-form">
+		<div class="aui-input-row">
+			<span class="aui-input-addon">岗位标题</span>
+			<input type="text" class="aui-input" >
+		</div>
+		<div class="aui-input-row">
+			<span class="aui-input-addon">岗位类型</span>
+			<input type="text" class="aui-input">
+		</div>
+		<div class=" aui-list-item">
+            <div class="aui-list-item-label title">
+                                         性别要求
+            </div>
+            
+            <div class="aui-list-item-input">
+                <select>
+                    <option>男</option>
+                    <option>女</option>
+                    <option>不限</option>
+                </select>
+            </div>
+             <i class="aui-iconfont aui-icon-unfold"></i>
+	     </div>   
+	    <div class="aui-list-item" style='border:none'>
+            <div class="aui-list-item-label title" >
+                                           结算方式
+            </div>
+            <div class="aui-list-item-input">
+                <select>
+                    <option>日</option>
+                    <option>次</option>
+                    <option>时</option>
+                    <option>周</option>
+                    <option>月</option>
+                </select>
+            </div>
+             <i class="aui-iconfont aui-icon-unfold"></i>
+	     </div> 
+	    <div class=" aui-list-item" style='display:flex'>
+            <div class="aui-input-row">
+				<span class="aui-input-addon">工资待遇</span>
+				<input type="text" class="aui-input" style='height:2.5rem;border:none'>
+		   </div> 
+            <div class="aui-list-item-input salary">
+                <select style='width:5.5rem'>
+                    <option>元/日</option>
+                     <option>元/次</option>
+                    <option>元/时</option>
+                    <option>元/周</option>
+                    <option>元/月</option>
+                     <option>面议</option>
+                </select>
+            </div>
+             <i class="aui-iconfont aui-icon-unfold"></i>
+	     </div> 
+	     <div class="aui-input-row">
+			<span class="aui-input-addon">招聘人数</span>
+			<input type="text" class="aui-input" >
+		</div>
+		<div class="aui-input-row" style='height:2.5rem;'>
+            <span class="aui-input-addon">职位日期</span>
+		    <span class="aui-input-addon">开始时间</span>
+			<input type="date" class="aui-input time" style='padding-right:0'>
+      		<span class="aui-input-addon"> 结束时间</span>
+			<input type="date" class="aui-input time" >
+		</div>
+		<div class="aui-input-row" style='height:2.5rem;'>
+			<span class="aui-input-addon">职位时段</span>
+			<span class="aui-input-addon">开始时间</span>
+			<input type="date" class="aui-input time" >
+			<span class="aui-input-addon">至 结束时间</span>
+			<input type="date" class="aui-input time" >
+		</div>
+	</div>
+	<p>兼职描述</p>
+	<textarea rows="5" ></textarea>
+	<div class=" aui-list-item" style='border-top:1px solid #c8c7cc;background:#fff'>
+            <div class="aui-list-item-label title">
+                                         所在区域
+            </div>
+            <div class="aui-list-item-input">
+                <select>
+                    <option>男</option>
+                    <option>女</option>
+                    <option>不限</option>
+                </select>
+            </div>
+             <i class="aui-iconfont aui-icon-unfold" style='margin-right:15px'></i>
+             <div class="aui-list-item-input">
+                <select>
+                    <option>男</option>
+                    <option>女</option>
+                    <option>不限</option>
+                </select>
+            </div>
+             <i class="aui-iconfont aui-icon-unfold"></i>
+  </div>
+            <div class="aui-input-row" style='margin-top:0'>
+			     <span class="aui-input-addon">详细地址</span>
+			     <input type="text" class="aui-input" >
+			</div>
+			<div class="aui-input-row">
+			     <span class="aui-input-addon">联系人</span>
+			     <input type="text" class="aui-input" >
+			</div>
+			<div class="aui-input-row">
+			     <span class="aui-input-addon">详细电话</span>
+			     <input type="text" class="aui-input" >
+			</div>
+			<div class="aui-input-row">
+			     <span class="aui-input-addon">联系邮箱</span>
+			     <input type="text" class="aui-input" >
+			</div>
+	</div> 
+	<div class="aui-btn aui-btn-block aui-btn-success" onclick="return false;">确认发布</div>
+	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    var header=$api.dom('header');
+    var headerH=$api.offset(header).h;
+    $api.fixStatusBar(headerH);
+	apiready = function(){
+		
+	};
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> .r5

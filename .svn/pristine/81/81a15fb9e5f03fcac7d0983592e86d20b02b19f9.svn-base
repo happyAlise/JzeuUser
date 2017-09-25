@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+      	/*头部样式*/
+    	.aui-bar-nav{background:#fff;color:#000;margin-bottom:0.5rem}
+    	.outlined{background:none;color:#ff6600;font-size:0.9rem}
+    	 .option {
+        position: relative;
+        box-sizing: border-box;
+        height: 50px;
+        border-bottom: 1px solid #ddd;
+        background:#fff;
+    }
+    
+    .option .title {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        box-sizing: border-box;
+        padding-left: 16px;
+        line-height: 50px;
+        font-size: 14px;
+        color: #444;
+        text-align: left;
+    }
+    
+    .option .arrow-panel {
+        position: absolute;
+        top: 0;
+        right: 12px;
+        width: auto;
+        height: 60px;
+        background-image: url(../image/arrow_right.png);
+        background-repeat: no-repeat;
+        background-size: 16px 24px;
+        background-position: right center;
+    }
+    
+    .option .arrow-panel .text {
+        box-sizing: border-box;
+        width: auto;
+        height: 60px;
+        padding-right: 20px;
+        line-height: 60px;
+        font-size: 13px;
+        color: #888;
+        text-align: left;
+    }
+    
+    .button {
+        width: auto;
+        height: 45px;
+        margin-left: 32px;
+        margin-right: 32px;
+        margin-top: 16px;
+        background-color:#FF6600;
+        line-height: 45px;
+        color: #fff;
+        font-size: 20px;
+        text-align: center;
+        border-radius: 6px;
+    }
+    
+    .highlight {
+        opacity: 0.7;
+    }
+    </style>
+</head>
+<body>
+	<header class="aui-bar aui-bar-nav" id="header" style='padding-top:20px'>
+		<a class="aui-btn aui-pull-left" style="background:none" onclick="api.closeWin();">
+			<span class="aui-iconfont aui-icon-left " style="color:#ff6600"></span>
+		</a>
+		<div class="aui-title">更多</div>
+	</header>	
+	
+	 <section>
+        <div class="option" tapmode onclick="fnClearCache();">
+            <div class="title">清除缓存</div>
+            <div class="arrow-panel">
+                <div id="cacheSize" class="text"></div>
+            </div>
+        </div>
+        <div class="option"  onclick='fnversion()'>
+            <div class="title">版本更新</div>
+            <div class="arrow-panel">
+                <div class="text"></div>
+            </div>
+        </div>
+        <div class="option">
+            <div class="title" onclick='fnopenabout()'>关于</div>
+            <div class="arrow-panel">
+                <div class="text"></div>
+            </div>
+        </div>
+        <div class="button" tapmode onclick="fnLogout();">退出登录</div>
+    </section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	var header=$api.dom('header');
+    $api.fixStatusBar(header);
+    fnGetCacheSize();
+	};
+function fnGetCacheSize () {
+    api.getCacheSize(function(ret){
+        var size = ret.size;
+        var cacheSize = $api.byId('cacheSize');
+        size = parseInt((size/1024/1024)*100)/100;
+        cacheSize.innerHTML = size + ' M';
+    });
+}
+
+function fnClearCache () {
+    api.clearCache(function(){
+        api.toast({
+            msg:'清除完成'
+        });
+        setTimeout(function(){
+            fnGetCacheSize();
+        }, 300);
+    });
+}
+ function fnversion(){
+	  api.alert({
+      title: '软件更新',
+      msg: '当前版本 1.2 \n当前已是最新版本,无需更新',
+      }, function(ret, err) {
+      });  
+	}　
+ function fnopenabout(){
+  api.openWin({
+	  name: 'about',
+	  url: './about.html'
+  });
+ 
+ }
+function fnLogout() {
+    $api.rmStorage('userInfo');
+     api.closeToWin({
+	     name: 'root'
+     });
+          }
+</script>
+</html>

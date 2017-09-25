@@ -1,0 +1,140 @@
+  <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+		/*列表1*/
+		 #list1{margin-top:0.3rem}
+	    .list{
+				margin: 0 0.1rem;
+				border: 1px solid #f2f2f2;
+				overflow: auto;
+				background:#fff;		
+			}
+			 .list:active{
+			   background:#ededed;
+			 }
+			.top {
+				display: flex;
+				padding: 0.5rem;
+			}
+			.top img{
+                height:3rem;
+                width:3rem;
+				flex: 0 0 3rem;
+				border-radius: 50%;
+			}
+			.top .title{
+				display: inline-block;
+				vertical-align: top;
+				padding-left: 1.5rem;
+				padding-top: 0.3rem;
+				margin-top:0.5rem;
+				flex:1;
+				font-size:0.9rem;
+				color:#FF6600;
+			}
+		  .borderd{border-bottom:2px solid #f60;color:#f60}
+			.outlined{background:none;color:#FFC02B;font-size:0.9rem}
+			.tip{width:100%;text-align:center;margin-top:0.5rem}
+			.tip p{margin-bottom:1rem;}
+			.imgbox{width:100%;text-align:center;margin-top:38%}
+			.imgbox img{width:150px;}
+    </style>
+</head>
+<body>
+	<div id="list1">	
+		<div id='evaluation'></div>
+	</div>		
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+  <script id="evaluationtmpl" type="text/x-dot-template">
+   {{ for(var i in it) { }}
+	   <div class='list' onclick="openwin('{{=it[i].name}}','{{=it[i].phone}}','{{=it[i].imgurl}}','{{=it[i].home}}','{{=it[i].number}}','{{=it[i].qq}}')">
+		  <div class='top'>
+		    {{ if(it[i].url==""||null) { }}
+			     <img src='../image/awatar.png' class='list1img'/>
+			{{ } }}
+			{{ else{ }}
+			     <img src='{{=it[i].imgurl}}' class='list1img'/>
+		     {{ } }}
+			 <div class='title'>
+			     <div>{{=it[i].name}}</div>
+			 </div>
+			</div>
+	   </div>	
+   {{ } }}
+  </script>
+<script type="text/javascript">
+   var wid=$api.getStorage('wwid');
+	apiready = function(){
+		 requestExamine();
+		api.setRefreshHeaderInfo({
+				loadingImg : 'widget://image/refresh.png',
+				bgColor : '#ccc',
+				textColor : '#fff',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...',
+			    showTime:true
+			}, function(ret, err){
+				//在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+				if (ret) {
+					setTimeout('requestExamine()',3000)
+					api.refreshHeaderLoadDone();
+				}
+			})	
+	} 
+	/*等待审核*/
+     function requestExamine(){  
+           $.ajax({
+				url :'http://106.14.69.92/Appmanager/Release/sign?wid='+wid,				
+				success:function(msg){
+					console.log(JSON.stringify(msg));
+//				    api.hideProgress();
+				    console.log(msg.length)
+					if(msg.length==0){
+					     var text="<div class='imgbox'><img src='../image/nodata.png'/></div>"+
+					   "<div  class='tip'><p>还没有报名此兼职的人员</p>"+
+					   "<div><div class='aui-btn aui-btn-warning outlined' onclick='fnopenjobtypewin()'>发布工作</div></div></div>"
+					    $('#list1').html(text)
+					}else{			
+                        var data=msg;
+			        	var evalText = doT.template($("#evaluationtmpl").text());
+			            $("#evaluation").html(evalText(data));
+					}
+				},
+				error:function(data){
+				     console.log(JSON.stringify(data))
+				}
+			});
+        }
+        
+  function openwin(name,phone,img,home,number,qq){                 
+      api.openWin({
+		    name: 'positionmsg',
+		    url: './positionmsg.html',
+		    pageParam:{
+		        'name':name,
+		        'phone':phone,
+		        'img':img,
+		        'home':home,
+		        'number':number,
+		        'qq':qq		        
+		        }
+	       })   
+   }  
+		 function fnopenjobtypewin(){
+		    api.openWin({
+		        name: 'issueTypeC',
+		        url: './issueTypeC.html'
+	        });	 
+		 }        
+   </script>
+</html>
